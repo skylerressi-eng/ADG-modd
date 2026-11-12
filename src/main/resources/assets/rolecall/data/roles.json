@@ -528,8 +528,9 @@
      "reached": "s2_device",
      "radius": 8.0
     },
-    "note": "On pace = at or near the Lights device when Maxor dies",
-    "src": "hn5984063 Floor 7 Guide (Advanced)"
+    "note": "On pace = at or near the Lights device when Maxor dies. Red outlines = blocks to mine (record them with /rolecall mine predev add)",
+    "src": "hn5984063 Floor 7 Guide (Advanced)",
+    "mine": "predev"
    },
    {
     "id": "h_p1_lights",
@@ -546,7 +547,8 @@
      "reached": "s3_device",
      "radius": 8.0
     },
-    "src": "hn5984063 Floor 7 Guide (Advanced)"
+    "src": "hn5984063 Floor 7 Guide (Advanced)",
+    "mine": "predev"
    },
    {
     "id": "h_p1_arrows",

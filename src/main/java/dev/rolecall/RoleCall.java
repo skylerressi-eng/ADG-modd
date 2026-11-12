@@ -226,6 +226,32 @@ public final class RoleCall {
 					: Component.empty());
 		}
 		ding(mc, 1.6f);
+		if (step.leap != null && c.leapPing && mc.player != null) {
+			DungeonClass target = DungeonClass.parse(step.leap).orElse(null);
+			// Shown only in your own chat; nothing is sent to the server.
+			mc.player.sendSystemMessage(Component.literal("[RoleCall] ").withColor(0xAAAAAA)
+					.append(Component.literal("LEAP NOW: ").withColor(0xFF5555))
+					.append(leapComponent(target)));
+			ding(mc, 2.0f);
+		}
+	}
+
+	private static String editingMine;
+	private static long editingMineUntil;
+
+	/** While you record a block list, show it for a minute even outside its step. */
+	public static void editingMine(String name) {
+		editingMine = name;
+		editingMineUntil = ticks + 20 * 60;
+	}
+
+	/** Name of the block list to outline right now: the current step's, or the one being recorded. */
+	public static String activeMineList() {
+		if (editingMine != null && ticks < editingMineUntil) {
+			return editingMine;
+		}
+		Step cur = view.current();
+		return cur == null ? null : cur.mine;
 	}
 
 	private static void ding(Minecraft mc, float pitch) {

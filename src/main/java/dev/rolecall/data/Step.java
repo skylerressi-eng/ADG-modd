@@ -26,6 +26,8 @@ public final class Step {
 	public List<String> waypoints;
 	/** Name of a user route to draw while this step is current. */
 	public String route;
+	/** Name of a recorded block list (/rolecall mine) to outline in red while this step is current. */
+	public String mine;
 	/** Restrict to F7 or M7; null/empty = both. */
 	public List<String> floors;
 	/** Where the step came from. "⚠" in here means "check against the ADG video". */

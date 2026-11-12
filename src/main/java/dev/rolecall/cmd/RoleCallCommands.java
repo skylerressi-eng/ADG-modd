@@ -80,6 +80,13 @@ public final class RoleCallCommands {
 										.then(literal("undo").executes(ctx -> route(ctx.getSource(), StringArgumentType.getString(ctx, "name"), "undo")))
 										.then(literal("clear").executes(ctx -> route(ctx.getSource(), StringArgumentType.getString(ctx, "name"), "clear")))
 										.then(literal("list").executes(ctx -> route(ctx.getSource(), StringArgumentType.getString(ctx, "name"), "list")))))
+						.then(literal("mine")
+								.then(argument("name", StringArgumentType.word())
+										.suggests((ctx, b) -> b.suggest("predev").buildFuture())
+										.then(literal("add").executes(ctx -> mine(ctx.getSource(), StringArgumentType.getString(ctx, "name"), "add")))
+										.then(literal("undo").executes(ctx -> mine(ctx.getSource(), StringArgumentType.getString(ctx, "name"), "undo")))
+										.then(literal("clear").executes(ctx -> mine(ctx.getSource(), StringArgumentType.getString(ctx, "name"), "clear")))
+										.then(literal("show").executes(ctx -> mine(ctx.getSource(), StringArgumentType.getString(ctx, "name"), "show")))))
 						.then(literal("sim")
 								.then(argument("script", StringArgumentType.word())
 										.suggests((ctx, b) -> {
@@ -102,6 +109,7 @@ public final class RoleCallCommands {
 		toggle(set, "leap", c -> c.leapHighlight, (c, v) -> c.leapHighlight = v);
 		toggle(set, "hud", c -> c.hudEnabled, (c, v) -> c.hudEnabled = v);
 		toggle(set, "idle", c -> c.idleHud, (c, v) -> c.idleHud = v);
+		toggle(set, "ping", c -> c.leapPing, (c, v) -> c.leapPing = v);
 		set.then(literal("volume").then(argument("volume", FloatArgumentType.floatArg(0, 2)).executes(ctx -> {
 			ConfigManager.get().soundVolume = FloatArgumentType.getFloat(ctx, "volume");
 			ConfigManager.save();
@@ -232,6 +240,37 @@ public final class RoleCallCommands {
 			return 0;
 		}
 		RoleCall.reload();
+		return 1;
+	}
+
+	/** Records the block you are looking at into a red-outline list (e.g. the predev mining path). */
+	private static int mine(FabricClientCommandSource src, String name, String op) {
+		String key = "mine:" + name;
+		try {
+			switch (op) {
+				case "add" -> {
+					if (!(net.minecraft.client.Minecraft.getInstance().hitResult instanceof net.minecraft.world.phys.BlockHitResult hit)
+							|| hit.getType() != net.minecraft.world.phys.HitResult.Type.BLOCK) {
+						src.sendError(Component.literal("[RoleCall] look at the block you want to add"));
+						return 0;
+					}
+					BlockPos p = hit.getBlockPos();
+					int n = DataFiles.addRoutePoint(key, p.getX(), p.getY(), p.getZ());
+					src.sendFeedback(msg("Mine list " + name + ": block " + n + " at " + p.getX() + " " + p.getY() + " " + p.getZ()));
+				}
+				case "undo" -> src.sendFeedback(msg("Mine list " + name + ": " + DataFiles.undoRoutePoint(key) + " blocks left"));
+				case "clear" -> {
+					DataFiles.clearRoute(key);
+					src.sendFeedback(msg("Mine list " + name + " cleared"));
+				}
+				default -> src.sendFeedback(msg("Showing mine list " + name + " (" + RoleCall.data().mineList(name).size() + " blocks) for 60 s"));
+			}
+		} catch (IOException | RuntimeException e) {
+			src.sendError(Component.literal("[RoleCall] " + e.getMessage()));
+			return 0;
+		}
+		RoleCall.reload();
+		RoleCall.editingMine(name);
 		return 1;
 	}
 

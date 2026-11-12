@@ -60,4 +60,12 @@ class RoleDataLoaderTest {
 		assertEquals("spot", d.objective("ss_wait").kind);
 		assertEquals(3, d.route("predev").size());
 	}
+
+	@Test
+	void mineListsAndHealerPredevUsesThem() {
+		String spots = "{\"routes\": {\"mine:predev\": [[60, 140, 120], [60, 139, 121]]}}";
+		RoleData d = RoleDataLoader.load(ROLES, null, OBJ, null, spots);
+		assertEquals(2, d.mineList("predev").size());
+		assertEquals("predev", d.steps(DungeonClass.HEALER).stream().filter(s -> s.id.equals("h_p1_mine")).findFirst().orElseThrow().mine);
+	}
 }

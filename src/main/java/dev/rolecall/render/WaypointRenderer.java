@@ -40,12 +40,14 @@ public final class WaypointRenderer {
 
 	public static void render(LevelRenderContext ctx) {
 		Minecraft mc = Minecraft.getInstance();
-		if (!ConfigManager.get().waypoints || mc.player == null || !RoleCall.active()) {
+		if (!ConfigManager.get().waypoints || mc.player == null || mc.level == null) {
 			return;
 		}
-		List<Wp> boxes = collect();
-		List<int[]> route = route();
-		if (boxes.isEmpty() && route.isEmpty()) {
+		List<int[]> mine = mineBlocks(mc);
+		boolean run = RoleCall.active();
+		List<Wp> boxes = run ? collect() : List.of();
+		List<int[]> route = run ? route() : List.of();
+		if (boxes.isEmpty() && route.isEmpty() && mine.isEmpty()) {
 			return;
 		}
 		CameraRenderState cam = ctx.levelState().cameraRenderState;
@@ -64,6 +66,9 @@ public final class WaypointRenderer {
 			}
 			for (int[] p : route) {
 				small(buf, pose, (float) (p[0] - c.x), (float) (p[1] - c.y), (float) (p[2] - c.z), 0xFFFFFF55);
+			}
+			for (int[] p : mine) {
+				box(buf, pose, (float) (p[0] - c.x), (float) (p[1] - c.y), (float) (p[2] - c.z), 0xFFFF3030);
 			}
 		});
 
@@ -112,6 +117,21 @@ public final class WaypointRenderer {
 
 	private static boolean floorOk(Objective o) {
 		return o.floors == null || o.floors.isEmpty() || (RoleCall.state().floor() != null && o.floors.contains(RoleCall.state().floor().name()));
+	}
+
+	/** Recorded blocks to mine that are still there (already-mined blocks are skipped). */
+	private static List<int[]> mineBlocks(Minecraft mc) {
+		String name = RoleCall.activeMineList();
+		if (name == null) {
+			return List.of();
+		}
+		List<int[]> out = new ArrayList<>();
+		for (int[] p : RoleCall.data().mineList(name)) {
+			if (!mc.level.getBlockState(new net.minecraft.core.BlockPos(p[0], p[1], p[2])).isAir()) {
+				out.add(p);
+			}
+		}
+		return out;
 	}
 
 	private static List<int[]> route() {

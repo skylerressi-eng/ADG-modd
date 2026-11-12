@@ -31,6 +31,10 @@ A client-side Fabric mod for Hypixel SkyBlock that shows what **your** dungeon c
   is hidden by finding the player who completed it and hiding the nearest objective of that kind, which is
   the same approach Skyblocker uses. `/rolecall set others on` also shows the rest of the section, dimmed.
 - **Spirit Leap menu**: outlines the head of the player you should leap to. Render only.
+- **Leap ping**: when a step tells you to leap, a `LEAP NOW: Leap → MAGE (name)` line appears in **your
+  own** chat with a sound. It is never sent to the server or the party. Turn it off with `/rolecall set ping off`.
+- **Predev mining outlines**: red outlines on the blocks to mine during Healer predev. Record them once
+  with `/rolecall mine predev add` while looking at each block. An outline disappears when its block is gone.
 - **Your own spots and routes**: `/rolecall here` and `/rolecall route` (for example the Healer predev
   mining route), drawn as numbered points joined by a line.
 - **M7 P5**: relic and dragon-side reminders, plus waypoints on the relic cauldrons and dragon spawns.
@@ -43,9 +47,9 @@ A client-side Fabric mod for Hypixel SkyBlock that shows what **your** dungeon c
 ## Install
 
 1. Minecraft **26.2** with Fabric Loader **0.19.5+**.
-2. Put `rolecall-0.3.1.jar` and **Fabric API** for 26.2 (0.161.0+26.2 or newer) in `.minecraft/mods/`.
+2. Put `rolecall-0.4.0.jar` and **Fabric API** for 26.2 (0.161.0+26.2 or newer) in `.minecraft/mods/`.
 
-Direct download: [releases/rolecall-0.3.1.jar](releases/rolecall-0.3.1.jar).
+Direct download: [releases/rolecall-0.4.0.jar](releases/rolecall-0.4.0.jar).
 
 No other mods are needed. The floor comes from the scoreboard, so the Hypixel Mod API isn't required.
 
@@ -60,10 +64,11 @@ No other mods are needed. The floor comes from the scoreboard, so the Hypixel Mo
 | `/rolecall next` · `/rolecall back` | Move the HUD to the next/previous step (display only) |
 | `/rolecall here <id> [label]` · `/rolecall unhere <id>` | Save/remove a spot at your feet (e.g. `ss_wait`) |
 | `/rolecall route <name> add\|undo\|clear\|list` | Build a route point by point (`predev` is shown during Healer predev) |
+| `/rolecall mine <name> add\|undo\|clear\|show` | Record the block you're looking at as a red-outline block (`predev` is shown during Healer predev) |
 | `/rolecall reload` | Re-read the JSON files and print any problems |
 | `/rolecall debug` | Overlay with everything RoleCall detected (scoreboard line, phase, section, party, nearest objective…) |
 | `/rolecall sim <f7_full\|m7_p5\|yours\|stop>` | Play a fake run **locally** to check the HUD (nothing is sent to the server) |
-| `/rolecall set <titles\|sound\|lightning\|waypoints\|others\|leap\|hud> [on\|off]` · `/rolecall set volume <0-2>` | Toggles |
+| `/rolecall set <titles\|sound\|lightning\|waypoints\|others\|leap\|ping\|idle\|hud> [on\|off]` · `/rolecall set volume <0-2>` | Toggles |
 
 Keybinds (Options → Controls → RoleCall, unbound by default): Next step, Previous step, Open class picker.
 

@@ -30,6 +30,8 @@ public class RoleCallConfig {
 	public boolean waypoints = true;
 	public boolean showOtherObjectives = false;
 	public boolean leapHighlight = true;
+	/** Local chat line + extra sound when a step tells you to leap (never sent to the server). */
+	public boolean leapPing = true;
 	public boolean debugOverlay = false;
 
 	void normalize() {

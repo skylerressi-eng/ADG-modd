@@ -48,6 +48,11 @@ public final class RoleData {
 		return routes.getOrDefault(name, List.of());
 	}
 
+	/** Blocks recorded with /rolecall mine (stored next to the routes as "mine:<name>"). */
+	public List<int[]> mineList(String name) {
+		return route("mine:" + name);
+	}
+
 	public Map<String, List<int[]>> routes() {
 		return routes;
 	}
