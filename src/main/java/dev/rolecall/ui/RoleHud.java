@@ -37,7 +37,7 @@ public final class RoleHud implements HudElement {
 	public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
 		Minecraft mc = Minecraft.getInstance();
 		RoleCallConfig config = ConfigManager.get();
-		if (!config.hudEnabled || mc.player == null || mc.options.hideGui || !RoleCall.active()) {
+		if (!config.hudEnabled || mc.player == null || mc.gui.hud.isHidden() || !RoleCall.active()) {
 			return;
 		}
 		List<Line> lines = build(mc.font, false);

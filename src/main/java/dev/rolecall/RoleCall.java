@@ -221,9 +221,9 @@ public final class RoleCall {
 	private static void onStepChanged(Minecraft mc, Step step, DungeonClass cls) {
 		RoleCallConfig c = ConfigManager.get();
 		if (c.stepTitles && ticks >= lightningTitleUntil) {
-			mc.gui.setTimes(4, 40, 10);
-			mc.gui.setTitle(Component.literal(step.titleText()).withColor(cls == null ? 0xFFFFFF : cls.rgb()));
-			mc.gui.setSubtitle(step.leap != null
+			mc.gui.hud.setTimes(4, 40, 10);
+			mc.gui.hud.setTitle(Component.literal(step.titleText()).withColor(cls == null ? 0xFFFFFF : cls.rgb()));
+			mc.gui.hud.setSubtitle(step.leap != null
 					? leapComponent(DungeonClass.parse(step.leap).orElse(null))
 					: Component.empty());
 		}
@@ -264,9 +264,9 @@ public final class RoleCall {
 		STATE.apply(e);
 		if (e.kind() == ChatTriggers.Kind.LIGHTNING && ConfigManager.get().lightningWarning) {
 			Minecraft mc = Minecraft.getInstance();
-			mc.gui.setTimes(2, 60, 10);
-			mc.gui.setTitle(Component.translatable("rolecall.title.lightning").withColor(0xFF5555));
-			mc.gui.setSubtitle(Component.translatable("rolecall.title.lightning.sub").withColor(0xFFFF55));
+			mc.gui.hud.setTimes(2, 60, 10);
+			mc.gui.hud.setTitle(Component.translatable("rolecall.title.lightning").withColor(0xFF5555));
+			mc.gui.hud.setSubtitle(Component.translatable("rolecall.title.lightning.sub").withColor(0xFFFF55));
 			lightningTitleUntil = ticks + 60;
 			ding(mc, 0.7f);
 		}

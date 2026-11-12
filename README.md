@@ -42,8 +42,10 @@ A client-side Fabric mod for Hypixel SkyBlock that shows what **your** dungeon c
 
 ## Install
 
-1. Minecraft **26.1.2** with Fabric Loader **0.19.3+**.
-2. Put `rolecall-0.2.0.jar` and **Fabric API** (0.154.0+26.1.2 or newer for 26.1.2) in `.minecraft/mods/`.
+1. Minecraft **26.2** with Fabric Loader **0.19.5+**.
+2. Put `rolecall-0.3.0.jar` and **Fabric API** for 26.2 (0.161.0+26.2 or newer) in `.minecraft/mods/`.
+
+Direct download: [releases/rolecall-0.3.0.jar](releases/rolecall-0.3.0.jar).
 
 No other mods are needed. The floor comes from the scoreboard, so the Hypixel Mod API isn't required.
 
@@ -138,5 +140,5 @@ The jar path is printed at the end: `build/libs/rolecall-<version>.jar`. `./grad
 engine tests (full F7 and M7 runs for every class, no Minecraft needed). `./gradlew runClient` starts a dev
 client. If your default `java` isn't 25, set `JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64` first.
 
-Versions are copied from CollectionClimb: Minecraft 26.1.2, Loader 0.19.3, Fabric API 0.154.0+26.1.2,
-Loom 1.17.13, Java 25.
+Versions: Minecraft 26.2, Loader 0.19.5, Fabric API 0.161.0+26.2, Loom 1.17.13, Java 25 (same toolchain as
+CollectionClimb, moved from 26.1.2 to 26.2). 26.2 moved the title methods to `Minecraft.gui.hud`.
