@@ -24,7 +24,10 @@ public class RoleCallConfig {
 	public boolean stepSound = true;
 	public float soundVolume = 1.0f;
 
+	public boolean lightningWarning = true;
+	public boolean waypoints = true;
 	public boolean showOtherObjectives = false;
+	public boolean leapHighlight = true;
 	public boolean debugOverlay = false;
 
 	void normalize() {

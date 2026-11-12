@@ -3,7 +3,7 @@
 	"id": "rolecall",
 	"version": "${version}",
 	"name": "RoleCall",
-	"description": "Display-only Hypixel SkyBlock F7 guide: shows what your dungeon class should do next. Never clicks, moves or sends chat for you. Use at your own risk.",
+	"description": "Display-only Hypixel SkyBlock F7 / M7 guide: shows what your dungeon class should do next, with waypoints on your own terminals, devices and levers. Never clicks, moves or sends chat for you. Use at your own risk.",
 	"authors": [
 		"skylerressi"
 	],

@@ -1,0 +1,927 @@
+{
+ "_comment": [
+  "RoleCall role steps for F7 and M7 (M7 P1-P4 reuse the F7 steps; P5 is M7-only).",
+  "Default text paraphrases the hypixel.net 'Floor 7 Guide (Advanced)' (thread 5984063). P5 comes from M7 forum threads. A ⚠ in src or note = check against the ADG video.",
+  "CLEAR: TODO, no steps yet; fill in from the ADG video chapters. The HUD stays hidden during clear while it's empty.",
+  "Edit config/rolecall/roles.json, not this file: same format, steps matched by id; \"remove\": true deletes, \"after\": \"<id>\" inserts. Then /rolecall reload."
+ ],
+ "version": 1,
+ "floors": [
+  "F7",
+  "M7"
+ ],
+ "classes": {
+  "ARCHER": [
+   {
+    "id": "a_p1_ss",
+    "phase": "P1",
+    "text": "Get to Simon Says (S1 device), leaping to the Healer once they're past it, and wait there",
+    "shortText": "Go to SS and wait",
+    "waypoints": [
+     "s1_device",
+     "ss_wait"
+    ],
+    "requires": {
+     "predev": true
+    },
+    "note": "The Healer leaps back to you after Storm. ⚠ check against ADG 0:00",
+    "src": "hn5984063 Floor 7 Guide (Advanced) ⚠"
+   },
+   {
+    "id": "a_p1_dps",
+    "phase": "P1",
+    "text": "Help kill Maxor",
+    "shortText": "DPS Maxor",
+    "requires": {
+     "predev": false
+    },
+    "src": "predev-off fallback (spec)"
+   },
+   {
+    "id": "a_p2_wait",
+    "phase": "P2",
+    "text": "AFK at Simon Says until Storm is dead and the Healer leaps in",
+    "shortText": "Wait at SS",
+    "waypoints": [
+     "s1_device",
+     "ss_wait"
+    ],
+    "until": {
+     "event": "storm_dead"
+    },
+    "requires": {
+     "predev": true
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "a_p2_clear",
+    "phase": "P2",
+    "text": "Clear mobs and help kill Storm",
+    "shortText": "Clear / DPS Storm",
+    "until": {
+     "event": "storm_dead"
+    },
+    "requires": {
+     "predev": false
+    },
+    "src": "predev-off fallback (spec)"
+   },
+   {
+    "id": "a_p2_levers",
+    "phase": "P2",
+    "text": "Go to the S1 levers and wait for Goldor",
+    "shortText": "Go to S1 levers",
+    "waypoints": [
+     "s1_lever_a",
+     "s1_lever_b"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "a_s1_levers",
+    "phase": "P3",
+    "text": "Do both S1 levers",
+    "section": 1,
+    "shortText": "Both levers",
+    "waypoints": [
+     "s1_lever_a",
+     "s1_lever_b"
+    ],
+    "until": {
+     "objectiveDone": [
+      "s1_lever_a",
+      "s1_lever_b"
+     ]
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "a_s1_gate",
+    "phase": "P3",
+    "text": "Blow the S1 gate",
+    "section": 1,
+    "shortText": "Blow the gate",
+    "until": {
+     "event": "gate"
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "a_s1_stand",
+    "phase": "P3",
+    "text": "Stand at the gate so the others can leap to you",
+    "section": 1,
+    "shortText": "Stand at gate",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "a_s2_t5",
+    "phase": "P3",
+    "text": "Do Terminal 5",
+    "section": 2,
+    "shortText": "Terminal 5",
+    "waypoints": [
+     "s2_t5"
+    ],
+    "until": {
+     "objectiveDone": [
+      "s2_t5"
+     ]
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "a_s2_lever",
+    "phase": "P3",
+    "text": "Do the right lever",
+    "section": 2,
+    "shortText": "Right lever",
+    "waypoints": [
+     "s2_lever_right"
+    ],
+    "until": {
+     "objectiveDone": [
+      "s2_lever_right"
+     ]
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "a_s3_t4",
+    "phase": "P3",
+    "text": "Do Terminal 4",
+    "section": 3,
+    "shortText": "Terminal 4",
+    "waypoints": [
+     "s3_t4"
+    ],
+    "until": {
+     "objectiveDone": [
+      "s3_t4"
+     ]
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "a_s3_gate",
+    "phase": "P3",
+    "text": "Blow the S3 gate",
+    "section": 3,
+    "shortText": "Blow the gate",
+    "until": {
+     "event": "gate"
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "a_s3_levers",
+    "phase": "P3",
+    "text": "Help with the levers",
+    "section": 3,
+    "shortText": "Help levers",
+    "waypoints": [
+     "s3_lever_a",
+     "s3_lever_b"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "a_s4_t4",
+    "phase": "P3",
+    "text": "Do Terminal 4",
+    "section": 4,
+    "shortText": "Terminal 4",
+    "waypoints": [
+     "s4_t4"
+    ],
+    "until": {
+     "objectiveDone": [
+      "s4_t4"
+     ]
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "a_s4_levers",
+    "phase": "P3",
+    "text": "Do the levers",
+    "section": 4,
+    "shortText": "Levers",
+    "waypoints": [
+     "s4_lever_a",
+     "s4_lever_b"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "a_tunnel",
+    "phase": "P3_TUNNEL",
+    "text": "Shoot Goldor. Never melee him (instant death)",
+    "shortText": "Shoot Goldor",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "a_p4",
+    "phase": "P4",
+    "text": "DPS Necron",
+    "shortText": "DPS Necron",
+    "src": "hn5984063 Floor 7 Guide (Advanced) (\"just DPS him\")"
+   },
+   {
+    "id": "a_p5",
+    "phase": "P5",
+    "text": "Place your relic, then go to your dragon side: ARCH team (you + Tank)",
+    "shortText": "Relic, then ARCH team",
+    "floors": [
+     "M7"
+    ],
+    "waypoints": [
+     "p5_drag_purple"
+    ],
+    "note": "Purple is always arch split. Common dragon priority: Red > Orange > Blue > Purple > Green. Kill each one inside its statue box. ⚠ relic colour per class not confirmed: set it in config/rolecall/roles.json",
+    "src": "hypixel.net M7 threads 5479620 / 5828596 / 5775844 ⚠"
+   }
+  ],
+  "BERSERK": [
+   {
+    "id": "b_p1",
+    "phase": "P1",
+    "text": "Grab the RIGHT crystal and place it, then DPS Maxor",
+    "shortText": "RIGHT crystal",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "b_p2",
+    "phase": "P2",
+    "text": "Clear Withermancers on the purple/red pillar side, then Leap → ARCHER",
+    "shortText": "Clear purple/red side",
+    "leap": "ARCHER",
+    "note": "Be down in P3 before the lightning, and cloak it",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "b_s1_t3",
+    "phase": "P3",
+    "text": "Do Terminal 3",
+    "section": 1,
+    "shortText": "Terminal 3",
+    "waypoints": [
+     "s1_t3"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "b_s2_t4",
+    "phase": "P3",
+    "text": "Do Terminal 4",
+    "section": 2,
+    "shortText": "Terminal 4",
+    "waypoints": [
+     "s2_t4"
+    ],
+    "until": {
+     "objectiveDone": [
+      "s2_t4"
+     ]
+    },
+    "note": "Then Terminal 3 (the Tank leaps to you to help)",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "b_s2_t3",
+    "phase": "P3",
+    "text": "Do Terminal 3",
+    "section": 2,
+    "shortText": "Terminal 3",
+    "waypoints": [
+     "s2_t3"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "b_s3_t3",
+    "phase": "P3",
+    "text": "Do Terminal 3",
+    "section": 3,
+    "shortText": "Terminal 3",
+    "waypoints": [
+     "s3_t3"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "b_s4_t3",
+    "phase": "P3",
+    "text": "Do Terminal 3",
+    "section": 4,
+    "shortText": "Terminal 3",
+    "waypoints": [
+     "s4_t3"
+    ],
+    "until": {
+     "objectiveDone": [
+      "s4_t3"
+     ]
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "b_s4_ss",
+    "phase": "P3",
+    "text": "Do the Sharpshooter device (stand on the gold plate)",
+    "section": 4,
+    "shortText": "Sharpshooter",
+    "waypoints": [
+     "s4_device"
+    ],
+    "requires": {
+     "s4split": "bers_device"
+    },
+    "note": "Agreed with the Healer this run (S4 split toggle)",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "b_s4_levers",
+    "phase": "P3",
+    "text": "Do the levers",
+    "section": 4,
+    "shortText": "Levers",
+    "waypoints": [
+     "s4_lever_a",
+     "s4_lever_b"
+    ],
+    "requires": {
+     "s4split": "bers_levers"
+    },
+    "note": "Agreed with the Healer this run (S4 split toggle)",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "b_tunnel",
+    "phase": "P3_TUNNEL",
+    "text": "Never melee Goldor (instant death). Use ranged damage only",
+    "shortText": "NO melee on Goldor",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "b_p4",
+    "phase": "P4",
+    "text": "DPS Necron",
+    "shortText": "DPS Necron",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "b_p5",
+    "phase": "P5",
+    "text": "Place your relic, then go to your dragon side: BERS team (you + Mage)",
+    "shortText": "Relic, then BERS team",
+    "floors": [
+     "M7"
+    ],
+    "waypoints": [
+     "p5_drag_orange"
+    ],
+    "note": "Orange is always bers split. Common dragon priority: Red > Orange > Blue > Purple > Green. Kill each one inside its statue box. ⚠ relic colour per class not confirmed: set it in config/rolecall/roles.json",
+    "src": "hypixel.net M7 threads 5479620 / 5828596 / 5775844 ⚠"
+   }
+  ],
+  "MAGE": [
+   {
+    "id": "m_p1",
+    "phase": "P1",
+    "text": "Grab the LEFT crystal and place it, then DPS Maxor",
+    "shortText": "LEFT crystal",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "m_p2_clear",
+    "phase": "P2",
+    "text": "Kill Withermancers along the middle and the green/yellow pillars",
+    "shortText": "Clear middle + green/yellow",
+    "until": {
+     "event": "lightning"
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "m_p2_storm",
+    "phase": "P2",
+    "text": "Get under the GREEN pillar, then aggro Storm from the ledge facing him and lead him under GREEN",
+    "shortText": "Under GREEN, lead Storm",
+    "until": {
+     "event": "storm_dead"
+    },
+    "note": "The Healer drops green. At half HP lead him under YELLOW (the Tank drops it)",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "m_p2_leap",
+    "phase": "P2",
+    "text": "Storm is dead: Leap → HEALER",
+    "shortText": "Leap → Healer",
+    "leap": "HEALER",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "m_s1_t4",
+    "phase": "P3",
+    "text": "Do Terminal 4",
+    "section": 1,
+    "shortText": "Terminal 4",
+    "waypoints": [
+     "s1_t4"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "m_s2_t2",
+    "phase": "P3",
+    "text": "Do Terminal 2",
+    "section": 2,
+    "shortText": "Terminal 2",
+    "waypoints": [
+     "s2_t2"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "m_s3_t2",
+    "phase": "P3",
+    "text": "Do Terminal 2",
+    "section": 3,
+    "shortText": "Terminal 2",
+    "waypoints": [
+     "s3_t2"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "m_s4_t2",
+    "phase": "P3",
+    "text": "Do Terminal 2",
+    "section": 4,
+    "shortText": "Terminal 2",
+    "waypoints": [
+     "s4_t2"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "m_tunnel",
+    "phase": "P3_TUNNEL",
+    "text": "Left-click mage beam on Goldor. Never melee him",
+    "shortText": "Beam Goldor, no melee",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "m_p4",
+    "phase": "P4",
+    "text": "DPS Necron",
+    "shortText": "DPS Necron",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "m_p5_relic",
+    "phase": "P5",
+    "text": "Grab the BLUE relic and place it in its cauldron",
+    "shortText": "BLUE relic",
+    "floors": [
+     "M7"
+    ],
+    "waypoints": [
+     "p5_relic_blue"
+    ],
+    "until": {
+     "reached": "p5_relic_blue",
+     "radius": 3.0
+    },
+    "note": "⚠ From an M7 mage guide; check with your party",
+    "src": "hypixel.net thread 5775844 (M7 LCM guide) ⚠"
+   },
+   {
+    "id": "m_p5_drags",
+    "phase": "P5",
+    "text": "Dragons: BERS team (you + Berserk)",
+    "shortText": "BERS team",
+    "floors": [
+     "M7"
+    ],
+    "waypoints": [
+     "p5_drag_orange"
+    ],
+    "note": "Orange is always bers split. Common dragon priority: Red > Orange > Blue > Purple > Green. Kill each one inside its statue box.",
+    "src": "hypixel.net M7 threads 5479620 / 5828596 / 5775844 ⚠"
+   }
+  ],
+  "HEALER": [
+   {
+    "id": "h_p1_mine",
+    "phase": "P1",
+    "text": "PREDEV: mine into Goldor's arena (follow your route)",
+    "shortText": "PREDEV: mine in",
+    "route": "predev",
+    "requires": {
+     "predev": true
+    },
+    "until": {
+     "reached": "s2_device",
+     "radius": 8.0
+    },
+    "note": "On pace = at or near the Lights device when Maxor dies",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_p1_lights",
+    "phase": "P1",
+    "text": "S2 Lights device: light every lamp so one lever flick finishes it",
+    "shortText": "Set Lights device",
+    "waypoints": [
+     "s2_device"
+    ],
+    "requires": {
+     "predev": true
+    },
+    "until": {
+     "reached": "s3_device",
+     "radius": 8.0
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_p1_arrows",
+    "phase": "P1",
+    "text": "S3 Arrow Align: align every arrow except one, leave it one click off",
+    "shortText": "Set Arrow Align",
+    "waypoints": [
+     "s3_device"
+    ],
+    "requires": {
+     "predev": true
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_p1_party",
+    "phase": "P1",
+    "text": "Stay with the party and keep everyone alive",
+    "shortText": "Keep party alive",
+    "requires": {
+     "predev": false
+    },
+    "src": "predev-off fallback (spec)"
+   },
+   {
+    "id": "h_p2_finish",
+    "phase": "P2",
+    "text": "Finish predev, then Leap → MAGE",
+    "shortText": "Finish predev → Mage",
+    "leap": "MAGE",
+    "waypoints": [
+     "s3_device"
+    ],
+    "requires": {
+     "predev": true
+    },
+    "until": {
+     "event": "lightning"
+    },
+    "note": "Not going to make it? Skip the device and leap to Mage. Latest leap: when the lightning countdown ends",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_p2_green",
+    "phase": "P2",
+    "text": "Drop the GREEN pillar when Storm is about halfway across",
+    "shortText": "Drop GREEN pillar",
+    "until": {
+     "event": "storm_dead"
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_p2_leap",
+    "phase": "P2",
+    "text": "Storm is crushed: Leap → ARCHER (at Simon Says)",
+    "shortText": "Leap → Archer",
+    "leap": "ARCHER",
+    "requires": {
+     "predev": true
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_p2_ss",
+    "phase": "P2",
+    "text": "Get to Simon Says (S1 device) for Goldor",
+    "shortText": "Go to SS",
+    "waypoints": [
+     "s1_device"
+    ],
+    "requires": {
+     "predev": false
+    },
+    "src": "predev-off fallback (spec)"
+   },
+   {
+    "id": "h_s1_ss",
+    "phase": "P3",
+    "text": "Do Simon Says (S1 device)",
+    "section": 1,
+    "shortText": "Simon Says",
+    "waypoints": [
+     "s1_device"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_s2_lights",
+    "phase": "P3",
+    "text": "Finish the Lights device (one flick if you predev'd it)",
+    "section": 2,
+    "shortText": "Finish Lights",
+    "waypoints": [
+     "s2_device"
+    ],
+    "until": {
+     "objectiveDone": [
+      "s2_device"
+     ]
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_s2_lever",
+    "phase": "P3",
+    "text": "Do the left lever",
+    "section": 2,
+    "shortText": "Left lever",
+    "waypoints": [
+     "s2_lever_left"
+    ],
+    "until": {
+     "objectiveDone": [
+      "s2_lever_left"
+     ]
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_s2_gate",
+    "phase": "P3",
+    "text": "Blow the S2 gate",
+    "section": 2,
+    "shortText": "Blow the gate",
+    "until": {
+     "event": "gate"
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_s3_arrows",
+    "phase": "P3",
+    "text": "Finish Arrow Align",
+    "section": 3,
+    "shortText": "Finish Arrow Align",
+    "waypoints": [
+     "s3_device"
+    ],
+    "until": {
+     "objectiveDone": [
+      "s3_device"
+     ]
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_s3_levers",
+    "phase": "P3",
+    "text": "Do the levers",
+    "section": 3,
+    "shortText": "Levers",
+    "waypoints": [
+     "s3_lever_a",
+     "s3_lever_b"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_s4_levers",
+    "phase": "P3",
+    "text": "Do the levers",
+    "section": 4,
+    "shortText": "Levers",
+    "waypoints": [
+     "s4_lever_a",
+     "s4_lever_b"
+    ],
+    "requires": {
+     "s4split": "bers_device"
+    },
+    "note": "Berserk does Sharpshooter this run (S4 split toggle)",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_s4_ss",
+    "phase": "P3",
+    "text": "Do the Sharpshooter device (stand on the gold plate)",
+    "section": 4,
+    "shortText": "Sharpshooter",
+    "waypoints": [
+     "s4_device"
+    ],
+    "requires": {
+     "s4split": "bers_levers"
+    },
+    "note": "Berserk does levers this run (S4 split toggle)",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_tunnel",
+    "phase": "P3_TUNNEL",
+    "text": "Never melee Goldor (instant death). Stay back and keep the party alive",
+    "shortText": "NO melee on Goldor",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_p4",
+    "phase": "P4",
+    "text": "DPS Necron and keep the party alive",
+    "shortText": "DPS Necron",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "h_p5_relic",
+    "phase": "P5",
+    "text": "Grab the PURPLE relic, place it, then leap to whoever is closest to the King",
+    "shortText": "PURPLE relic",
+    "floors": [
+     "M7"
+    ],
+    "waypoints": [
+     "p5_relic_purple"
+    ],
+    "until": {
+     "reached": "p5_relic_purple",
+     "radius": 3.0
+    },
+    "src": "hypixel.net thread 5479620 ⚠"
+   },
+   {
+    "id": "h_p5_drags",
+    "phase": "P5",
+    "text": "Dragons: lay debuffs (Last Breath) as they spawn",
+    "shortText": "Debuff dragons",
+    "floors": [
+     "M7"
+    ],
+    "note": "Guides disagree on the Healer's team (Bers or Arch). Agree with your party. Common dragon priority: Red > Orange > Blue > Purple > Green. Kill each one inside its statue box.",
+    "src": "hypixel.net M7 threads 5479620 / 5828596 / 5775844 ⚠"
+   }
+  ],
+  "TANK": [
+   {
+    "id": "t_p1",
+    "phase": "P1",
+    "text": "Stand under Maxor to hold aggro (proximity, not hits)",
+    "shortText": "Aggro Maxor",
+    "note": "Lead him under the laser and hit him while it charges",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "t_p2_pad",
+    "phase": "P2",
+    "text": "Go to the YELLOW pad and clear mobs (help Mage and Berserk)",
+    "shortText": "Yellow pad, clear",
+    "until": {
+     "event": "lightning"
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "t_p2_yellow",
+    "phase": "P2",
+    "text": "Stay near the YELLOW pad and drop the YELLOW pillar when Mage leads Storm under it",
+    "shortText": "Drop YELLOW pillar",
+    "until": {
+     "event": "storm_dead"
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "t_p2_leap",
+    "phase": "P2",
+    "text": "Storm is dead: Leap → HEALER",
+    "shortText": "Leap → Healer",
+    "leap": "HEALER",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "t_s1_t2",
+    "phase": "P3",
+    "text": "Do Terminal 2",
+    "section": 1,
+    "shortText": "Terminal 2",
+    "waypoints": [
+     "s1_t2"
+    ],
+    "until": {
+     "objectiveDone": [
+      "s1_t2"
+     ]
+    },
+    "note": "Then Terminal 1",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "t_s1_t1",
+    "phase": "P3",
+    "text": "Do Terminal 1",
+    "section": 1,
+    "shortText": "Terminal 1",
+    "waypoints": [
+     "s1_t1"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "t_s2_t1",
+    "phase": "P3",
+    "text": "Do Terminal 1",
+    "section": 2,
+    "shortText": "Terminal 1",
+    "waypoints": [
+     "s2_t1"
+    ],
+    "until": {
+     "objectiveDone": [
+      "s2_t1"
+     ]
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "t_s2_help",
+    "phase": "P3",
+    "text": "Leap → BERSERK and help with Terminal 3",
+    "section": 2,
+    "shortText": "Leap → Bers, T3",
+    "leap": "BERSERK",
+    "waypoints": [
+     "s2_t3"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "t_s3_t1",
+    "phase": "P3",
+    "text": "Do Terminal 1",
+    "section": 3,
+    "shortText": "Terminal 1",
+    "waypoints": [
+     "s3_t1"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "t_s4_t1",
+    "phase": "P3",
+    "text": "Do Terminal 1",
+    "section": 4,
+    "shortText": "Terminal 1",
+    "waypoints": [
+     "s4_t1"
+    ],
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "t_tunnel",
+    "phase": "P3_TUNNEL",
+    "text": "Stay close to the Mage and Archer. Never melee Goldor",
+    "shortText": "Stay close, no melee",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "t_p4",
+    "phase": "P4",
+    "text": "DPS Necron",
+    "shortText": "DPS Necron",
+    "src": "hn5984063 Floor 7 Guide (Advanced)"
+   },
+   {
+    "id": "t_p5",
+    "phase": "P5",
+    "text": "Place your relic, then go to your dragon side: ARCH team (you + Archer)",
+    "shortText": "Relic, then ARCH team",
+    "floors": [
+     "M7"
+    ],
+    "waypoints": [
+     "p5_drag_purple"
+    ],
+    "note": "Lay debuffs (Last Breath) as dragons spawn. Purple is always arch split. Common dragon priority: Red > Orange > Blue > Purple > Green. Kill each one inside its statue box. ⚠ relic colour per class not confirmed",
+    "src": "hypixel.net M7 threads 5479620 / 5828596 / 5775844 ⚠"
+   }
+  ]
+ }
+}

@@ -1,0 +1,104 @@
+# Full F7 boss with a 5-class party. Play with: /rolecall sim f7_full
+# You are "You" (class from your /rolecall pick, or Healer if Auto).
+floor F7
+party Arch ARCHER
+party Bers BERSERK
+party Magey MAGE
+party Tanky TANK
+me You HEALER
+pos 73 221 14
+wait 20
+chat [BOSS] Maxor: WELL! WELL! WELL! LOOK WHO'S HERE!
+wait 80
+pos 60 130 140
+wait 60
+pos 2 120 78
+wait 60
+chat [BOSS] Storm: Pathetic Maxor, just like expected.
+wait 80
+chat [BOSS] Storm: ENERGY HEED MY CALL!
+wait 80
+chat [BOSS] Storm: I should have known that I stood no chance.
+wait 60
+chat [BOSS] Goldor: Who dares trespass into my domain?
+wait 40
+chat Tanky activated a terminal! (1/7)
+done s1_t2
+wait 20
+chat Magey activated a terminal! (2/7)
+done s1_t4
+wait 20
+chat Bers activated a terminal! (3/7)
+done s1_t3
+wait 20
+chat Arch activated a lever! (4/7)
+done s1_lever_a
+wait 20
+chat Arch activated a lever! (5/7)
+done s1_lever_b
+wait 20
+chat You completed a device! (6/7)
+done s1_device
+wait 20
+chat The gate has been destroyed!
+wait 20
+chat Tanky activated a terminal! (7/7)
+done s1_t1
+wait 60
+chat Tanky activated a terminal! (1/8)
+done s2_t1
+wait 20
+chat Magey activated a terminal! (2/8)
+done s2_t2
+wait 20
+chat Bers activated a terminal! (3/8)
+done s2_t4
+wait 20
+chat You completed a device! (4/8)
+done s2_device
+wait 20
+chat You activated a lever! (5/8)
+done s2_lever_left
+wait 20
+chat Arch activated a terminal! (6/8)
+done s2_t5
+wait 20
+chat Arch activated a lever! (7/8)
+done s2_lever_right
+wait 20
+chat The gate has been destroyed!
+wait 20
+chat Bers activated a terminal! (8/8)
+done s2_t3
+wait 60
+chat Tanky activated a terminal! (1/7)
+chat Magey activated a terminal! (2/7)
+chat Bers activated a terminal! (3/7)
+chat Arch activated a terminal! (4/7)
+done s3_t4
+wait 20
+chat The gate has been destroyed!
+chat You completed a device! (5/7)
+done s3_device
+wait 20
+chat You activated a lever! (6/7)
+chat Arch activated a lever! (7/7)
+wait 60
+chat Tanky activated a terminal! (1/7)
+chat Magey activated a terminal! (2/7)
+chat Bers activated a terminal! (3/7)
+done s4_t3
+wait 20
+chat Arch activated a terminal! (4/7)
+done s4_t4
+chat Bers completed a device! (5/7)
+chat You activated a lever! (6/7)
+chat Arch activated a lever! (7/7)
+wait 20
+chat The Core entrance is opening!
+wait 80
+chat [BOSS] Necron: You went further than any human before, congratulations.
+wait 100
+chat [BOSS] Necron: All this, for nothing...
+wait 40
+chat                      ☠ Defeated Maxor, Storm, Goldor, and Necron in 05m 12s

@@ -1,0 +1,472 @@
+{
+ "_comment": [
+  "Fixed F7/M7 boss coordinates. P3 terminals/devices/levers match Skyblocker goldorwaypoints.json;",
+  "Odin agrees on Simon Says (110,121,91) and Arrow Align (0,120,77). M7 relic cauldrons and dragon spawns are from Odin (KingRelics, WitherDragonsEnum).",
+  "S2 left/right lever is worked out for someone facing west through S2 - check it in game with /rolecall debug.",
+  "Override or add entries in config/rolecall/objectives.json (same format, matched by id; \"remove\": true deletes)."
+ ],
+ "version": 1,
+ "objectives": [
+  {
+   "id": "s1_device",
+   "kind": "device",
+   "section": 1,
+   "label": "S1 Simon Says (start button)",
+   "pos": [
+    110,
+    121,
+    91
+   ]
+  },
+  {
+   "id": "s1_t1",
+   "kind": "terminal",
+   "section": 1,
+   "label": "S1 Terminal 1",
+   "pos": [
+    111,
+    113,
+    73
+   ]
+  },
+  {
+   "id": "s1_t2",
+   "kind": "terminal",
+   "section": 1,
+   "label": "S1 Terminal 2",
+   "pos": [
+    111,
+    119,
+    79
+   ]
+  },
+  {
+   "id": "s1_t3",
+   "kind": "terminal",
+   "section": 1,
+   "label": "S1 Terminal 3",
+   "pos": [
+    89,
+    112,
+    92
+   ]
+  },
+  {
+   "id": "s1_t4",
+   "kind": "terminal",
+   "section": 1,
+   "label": "S1 Terminal 4",
+   "pos": [
+    89,
+    122,
+    101
+   ]
+  },
+  {
+   "id": "s1_lever_a",
+   "kind": "lever",
+   "section": 1,
+   "label": "S1 Lever",
+   "pos": [
+    106,
+    124,
+    113
+   ]
+  },
+  {
+   "id": "s1_lever_b",
+   "kind": "lever",
+   "section": 1,
+   "label": "S1 Lever",
+   "pos": [
+    94,
+    124,
+    113
+   ]
+  },
+  {
+   "id": "s2_device",
+   "kind": "device",
+   "section": 2,
+   "label": "S2 Lights device",
+   "pos": [
+    60,
+    132,
+    143
+   ]
+  },
+  {
+   "id": "s2_t1",
+   "kind": "terminal",
+   "section": 2,
+   "label": "S2 Terminal 1",
+   "pos": [
+    68,
+    109,
+    121
+   ]
+  },
+  {
+   "id": "s2_t2",
+   "kind": "terminal",
+   "section": 2,
+   "label": "S2 Terminal 2",
+   "pos": [
+    59,
+    120,
+    122
+   ]
+  },
+  {
+   "id": "s2_t3",
+   "kind": "terminal",
+   "section": 2,
+   "label": "S2 Terminal 3",
+   "pos": [
+    47,
+    109,
+    121
+   ]
+  },
+  {
+   "id": "s2_t4",
+   "kind": "terminal",
+   "section": 2,
+   "label": "S2 Terminal 4",
+   "pos": [
+    40,
+    124,
+    122
+   ]
+  },
+  {
+   "id": "s2_t5",
+   "kind": "terminal",
+   "section": 2,
+   "label": "S2 Terminal 5",
+   "pos": [
+    39,
+    108,
+    143
+   ]
+  },
+  {
+   "id": "s2_lever_right",
+   "kind": "lever",
+   "section": 2,
+   "label": "S2 Right lever",
+   "pos": [
+    27,
+    124,
+    127
+   ],
+   "side": "right"
+  },
+  {
+   "id": "s2_lever_left",
+   "kind": "lever",
+   "section": 2,
+   "label": "S2 Left lever",
+   "pos": [
+    23,
+    132,
+    138
+   ],
+   "side": "left"
+  },
+  {
+   "id": "s3_device",
+   "kind": "device",
+   "section": 3,
+   "label": "S3 Arrow Align",
+   "pos": [
+    0,
+    120,
+    77
+   ]
+  },
+  {
+   "id": "s3_t1",
+   "kind": "terminal",
+   "section": 3,
+   "label": "S3 Terminal 1",
+   "pos": [
+    -3,
+    109,
+    112
+   ]
+  },
+  {
+   "id": "s3_t2",
+   "kind": "terminal",
+   "section": 3,
+   "label": "S3 Terminal 2",
+   "pos": [
+    -3,
+    119,
+    93
+   ]
+  },
+  {
+   "id": "s3_t3",
+   "kind": "terminal",
+   "section": 3,
+   "label": "S3 Terminal 3",
+   "pos": [
+    19,
+    123,
+    93
+   ]
+  },
+  {
+   "id": "s3_t4",
+   "kind": "terminal",
+   "section": 3,
+   "label": "S3 Terminal 4",
+   "pos": [
+    -3,
+    109,
+    77
+   ]
+  },
+  {
+   "id": "s3_lever_a",
+   "kind": "lever",
+   "section": 3,
+   "label": "S3 Lever",
+   "pos": [
+    14,
+    122,
+    55
+   ]
+  },
+  {
+   "id": "s3_lever_b",
+   "kind": "lever",
+   "section": 3,
+   "label": "S3 Lever",
+   "pos": [
+    2,
+    122,
+    55
+   ]
+  },
+  {
+   "id": "s4_device",
+   "kind": "device",
+   "section": 4,
+   "label": "S4 Sharpshooter (stand on the gold plate)",
+   "pos": [
+    63,
+    127,
+    35
+   ]
+  },
+  {
+   "id": "s4_t1",
+   "kind": "terminal",
+   "section": 4,
+   "label": "S4 Terminal 1",
+   "pos": [
+    41,
+    109,
+    29
+   ]
+  },
+  {
+   "id": "s4_t2",
+   "kind": "terminal",
+   "section": 4,
+   "label": "S4 Terminal 2",
+   "pos": [
+    44,
+    121,
+    29
+   ]
+  },
+  {
+   "id": "s4_t3",
+   "kind": "terminal",
+   "section": 4,
+   "label": "S4 Terminal 3",
+   "pos": [
+    67,
+    109,
+    29
+   ]
+  },
+  {
+   "id": "s4_t4",
+   "kind": "terminal",
+   "section": 4,
+   "label": "S4 Terminal 4",
+   "pos": [
+    72,
+    115,
+    48
+   ]
+  },
+  {
+   "id": "s4_lever_a",
+   "kind": "lever",
+   "section": 4,
+   "label": "S4 Lever",
+   "pos": [
+    86,
+    128,
+    46
+   ]
+  },
+  {
+   "id": "s4_lever_b",
+   "kind": "lever",
+   "section": 4,
+   "label": "S4 Lever",
+   "pos": [
+    84,
+    121,
+    34
+   ]
+  },
+  {
+   "id": "p5_relic_green",
+   "kind": "relic",
+   "label": "Green relic cauldron",
+   "pos": [
+    49,
+    7,
+    44
+   ],
+   "floors": [
+    "M7"
+   ],
+   "color": "55FF55"
+  },
+  {
+   "id": "p5_relic_purple",
+   "kind": "relic",
+   "label": "Purple relic cauldron",
+   "pos": [
+    54,
+    7,
+    41
+   ],
+   "floors": [
+    "M7"
+   ],
+   "color": "AA00AA"
+  },
+  {
+   "id": "p5_relic_blue",
+   "kind": "relic",
+   "label": "Blue relic cauldron",
+   "pos": [
+    59,
+    7,
+    44
+   ],
+   "floors": [
+    "M7"
+   ],
+   "color": "55FFFF"
+  },
+  {
+   "id": "p5_relic_orange",
+   "kind": "relic",
+   "label": "Orange relic cauldron",
+   "pos": [
+    57,
+    7,
+    42
+   ],
+   "floors": [
+    "M7"
+   ],
+   "color": "FFAA00"
+  },
+  {
+   "id": "p5_relic_red",
+   "kind": "relic",
+   "label": "Red relic cauldron",
+   "pos": [
+    51,
+    7,
+    42
+   ],
+   "floors": [
+    "M7"
+   ],
+   "color": "FF5555"
+  },
+  {
+   "id": "p5_drag_red",
+   "kind": "spot",
+   "label": "Red dragon spawn",
+   "pos": [
+    27,
+    14,
+    59
+   ],
+   "floors": [
+    "M7"
+   ],
+   "color": "FF5555"
+  },
+  {
+   "id": "p5_drag_orange",
+   "kind": "spot",
+   "label": "Orange dragon spawn",
+   "pos": [
+    85,
+    14,
+    56
+   ],
+   "floors": [
+    "M7"
+   ],
+   "color": "FFAA00"
+  },
+  {
+   "id": "p5_drag_green",
+   "kind": "spot",
+   "label": "Green dragon spawn",
+   "pos": [
+    27,
+    14,
+    94
+   ],
+   "floors": [
+    "M7"
+   ],
+   "color": "55FF55"
+  },
+  {
+   "id": "p5_drag_blue",
+   "kind": "spot",
+   "label": "Blue dragon spawn",
+   "pos": [
+    84,
+    14,
+    94
+   ],
+   "floors": [
+    "M7"
+   ],
+   "color": "55FFFF"
+  },
+  {
+   "id": "p5_drag_purple",
+   "kind": "spot",
+   "label": "Purple dragon spawn",
+   "pos": [
+    56,
+    14,
+    125
+   ],
+   "floors": [
+    "M7"
+   ],
+   "color": "AA00AA"
+  }
+ ]
+}

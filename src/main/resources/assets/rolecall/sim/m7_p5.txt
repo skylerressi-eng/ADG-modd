@@ -1,0 +1,17 @@
+# M7 from Necron to the end of P5. Play with: /rolecall sim m7_p5
+floor M7
+party Arch ARCHER
+party Bers BERSERK
+party Magey MAGE
+party Tanky TANK
+me You HEALER
+pos 54 64 76
+chat [BOSS] Necron: You went further than any human before, congratulations.
+wait 100
+chat [BOSS] Necron: All this, for nothing...
+wait 20
+chat [BOSS] Wither King: You... again?
+pos 54 8 60
+wait 60
+pos 54 7 42
+wait 100
