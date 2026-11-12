@@ -101,6 +101,7 @@ public final class RoleCallCommands {
 		toggle(set, "others", c -> c.showOtherObjectives, (c, v) -> c.showOtherObjectives = v);
 		toggle(set, "leap", c -> c.leapHighlight, (c, v) -> c.leapHighlight = v);
 		toggle(set, "hud", c -> c.hudEnabled, (c, v) -> c.hudEnabled = v);
+		toggle(set, "idle", c -> c.idleHud, (c, v) -> c.idleHud = v);
 		set.then(literal("volume").then(argument("volume", FloatArgumentType.floatArg(0, 2)).executes(ctx -> {
 			ConfigManager.get().soundVolume = FloatArgumentType.getFloat(ctx, "volume");
 			ConfigManager.save();

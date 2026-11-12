@@ -43,9 +43,9 @@ A client-side Fabric mod for Hypixel SkyBlock that shows what **your** dungeon c
 ## Install
 
 1. Minecraft **26.2** with Fabric Loader **0.19.5+**.
-2. Put `rolecall-0.3.0.jar` and **Fabric API** for 26.2 (0.161.0+26.2 or newer) in `.minecraft/mods/`.
+2. Put `rolecall-0.3.1.jar` and **Fabric API** for 26.2 (0.161.0+26.2 or newer) in `.minecraft/mods/`.
 
-Direct download: [releases/rolecall-0.3.0.jar](releases/rolecall-0.3.0.jar).
+Direct download: [releases/rolecall-0.3.1.jar](releases/rolecall-0.3.1.jar).
 
 No other mods are needed. The floor comes from the scoreboard, so the Hypixel Mod API isn't required.
 

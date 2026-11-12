@@ -159,6 +159,8 @@ public final class RunState {
 			phaseFromFallback = true;
 			if (phase == Phase.P3) {
 				section = guessSectionFromPosition().orElse(1);
+				progress = 0;
+				progressTotal = section == 2 ? 8 : 7;
 			}
 		}
 	}

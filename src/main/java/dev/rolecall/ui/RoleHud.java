@@ -37,10 +37,21 @@ public final class RoleHud implements HudElement {
 	public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
 		Minecraft mc = Minecraft.getInstance();
 		RoleCallConfig config = ConfigManager.get();
-		if (!config.hudEnabled || mc.player == null || mc.gui.hud.isHidden() || !RoleCall.active()) {
+		if (!config.hudEnabled || mc.player == null || mc.gui.hud.isHidden()) {
 			return;
 		}
-		List<Line> lines = build(mc.font, false);
+		List<Line> lines;
+		if (!RoleCall.active()) {
+			if (!config.idleHud) {
+				return;
+			}
+			// One small line so you can see RoleCall is loaded; the full HUD appears in F7/M7.
+			lines = new ArrayList<>();
+			DungeonClass c = RoleCall.effectiveClass();
+			add(lines, mc.font, header(c, "waiting for F7/M7", false), 1f, 0xFFAAAAAA);
+		} else {
+			lines = build(mc.font, false);
+		}
 		if (lines.isEmpty()) {
 			return;
 		}

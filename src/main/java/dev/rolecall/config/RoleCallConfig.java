@@ -16,6 +16,8 @@ public class RoleCallConfig {
 	public S4Split s4Split = S4Split.BERS_DEVICE;
 
 	public boolean hudEnabled = true;
+	/** Show one small "waiting for F7/M7" line outside runs, so you can see the mod is loaded. */
+	public boolean idleHud = true;
 	public int hudX = 6;
 	public int hudY = 6;
 	public float hudScale = 1.0f;

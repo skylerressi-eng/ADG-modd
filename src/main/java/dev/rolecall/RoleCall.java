@@ -11,6 +11,7 @@ import dev.rolecall.model.Floor;
 import dev.rolecall.model.Phase;
 import dev.rolecall.sim.SimPlayer;
 import dev.rolecall.state.ChatTriggers;
+import dev.rolecall.state.FloorParser;
 import dev.rolecall.state.PartyTracker;
 import dev.rolecall.state.RunState;
 import net.minecraft.client.Minecraft;
@@ -28,16 +29,13 @@ import net.minecraft.world.scores.Scoreboard;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * The live glue between Minecraft and the pure-Java engine. Reads the scoreboard, tab list,
  * chat and your position; never sends anything. All methods run on the client thread.
  */
 public final class RoleCall {
-	private static final Pattern FLOOR_PATTERN = Pattern.compile("The Catacombs \\(([FM]\\d)\\)");
-	/** A completion is credited to an objective only if the player stood this close to it. */
+		/** A completion is credited to an objective only if the player stood this close to it. */
 	private static final double ATTRIBUTION_RANGE = 10.0;
 
 	private static final RunState STATE = new RunState();
@@ -250,14 +248,19 @@ public final class RoleCall {
 
 	/** Called for every game (non-overlay) chat line, and for sim chat lines. */
 	public static void onChat(String text) {
-		if (!active()) {
-			return;
-		}
 		Optional<ChatTriggers.Event> parsed = ChatTriggers.parse(text);
 		if (parsed.isEmpty()) {
 			return;
 		}
 		ChatTriggers.Event e = parsed.get();
+		if (!active()) {
+			// These lines only exist in the F7/M7 boss. If the sidebar wasn't read yet, start anyway
+			// (as F7; the sidebar corrects it to M7 within a second).
+			if (e.kind() == ChatTriggers.Kind.RUN_END || e.kind() == ChatTriggers.Kind.GATE) {
+				return;
+			}
+			STATE.setFloor(Floor.F7);
+		}
 		if (e.isProgress()) {
 			attribute(e);
 		}
@@ -316,48 +319,38 @@ public final class RoleCall {
 	private static void readFloor(Minecraft mc) {
 		Scoreboard sb = mc.level.getScoreboard();
 		net.minecraft.world.scores.Objective obj = sb.getDisplayObjective(DisplaySlot.SIDEBAR);
-		Floor floor = null;
+		List<String> lines = new ArrayList<>();
 		if (obj != null) {
 			for (PlayerScoreEntry entry : sb.listPlayerScores(obj)) {
 				if (entry.isHidden()) continue;
 				PlayerTeam team = sb.getPlayersTeam(entry.owner());
-				String line = asciiOnly(PlayerTeam.formatNameForTeam(team, entry.ownerName()).getString());
-				Matcher m = FLOOR_PATTERN.matcher(line);
-				if (m.find()) {
-					rawFloorLine = line.strip();
-					floor = Floor.parse(m.group(1)).orElse(null);
-					break;
+				if (team != null) {
+					// Like Skyblocker: prefix + suffix only; the holder name in between is invisible colour codes.
+					lines.add(team.getPlayerPrefix().getString() + team.getPlayerSuffix().getString());
+				}
+				if (entry.display() != null) {
+					lines.add(entry.display().getString());
 				}
 			}
 		}
-		if (floor == null) {
-			rawFloorLine = "";
+		Optional<String[]> found = FloorParser.find(lines);
+		rawFloorLine = found.map(f -> f[0]).orElse(lines.isEmpty() ? "" : "(no Catacombs line in " + lines.size() + " lines)");
+		Floor floor = found.flatMap(f -> Floor.parse(f[1])).orElse(null);
+		if (found.isPresent() && floor == null && STATE.floor() != null) {
+			resetRun(); // a different Catacombs floor: not F7/M7
+		} else if (floor != null && floor != STATE.floor()) {
+			STATE.setFloor(floor);
 		}
-		if (floor != STATE.floor()) {
-			if (floor == null) {
-				resetRun();
-			} else {
-				STATE.setFloor(floor);
-			}
-		}
-	}
-
-	/** Hypixel pads scoreboard lines with emoji and invisible characters; keep plain ASCII. */
-	private static String asciiOnly(String s) {
-		StringBuilder b = new StringBuilder(s.length());
-		for (int i = 0; i < s.length(); i++) {
-			char ch = s.charAt(i);
-			if (ch >= 32 && ch < 127) b.append(ch);
-		}
-		return b.toString();
+		// No Catacombs line at all: keep what we have (the sidebar can blink during loading);
+		// the run is reset on world change.
 	}
 
 	private static void readTabList(Minecraft mc) {
-		if (!STATE.inRun() || mc.getConnection() == null) {
+		if (mc.getConnection() == null) {
 			return;
 		}
 		List<String> lines = new ArrayList<>();
-		for (PlayerInfo info : mc.getConnection().getListedOnlinePlayers()) {
+		for (PlayerInfo info : mc.getConnection().getOnlinePlayers()) {
 			Component name = info.getTabListDisplayName();
 			if (name != null) {
 				lines.add(name.getString());
