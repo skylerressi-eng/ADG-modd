@@ -57,9 +57,9 @@ A client-side Fabric mod for Hypixel SkyBlock that shows what **your** dungeon c
 ## Install
 
 1. Minecraft **26.2** with Fabric Loader **0.19.5+**.
-2. Put `rolecall-0.5.0.jar` and **Fabric API** for 26.2 (0.161.0+26.2 or newer) in `.minecraft/mods/`.
+2. Put `rolecall-0.5.1.jar` and **Fabric API** for 26.2 (0.161.0+26.2 or newer) in `.minecraft/mods/`.
 
-Direct download: [releases/rolecall-0.5.0.jar](releases/rolecall-0.5.0.jar).
+Direct download: [releases/rolecall-0.5.1.jar](releases/rolecall-0.5.1.jar).
 
 No other mods are needed. The floor comes from the scoreboard, so the Hypixel Mod API isn't required.
 
@@ -85,6 +85,11 @@ Keybinds (Options → Controls → RoleCall, unbound by default): Next step, Pre
 **Predev toggle:** Auto turns predev on when the party has a Healer. With predev off, the Healer's predev
 steps are hidden, and the Archer goes to the S1 levers instead of waiting at Simon Says.
 **S4 split:** "Berserk = Sharpshooter, Healer = Levers" or the reverse. Those two agree on it each run.
+**Storm crush** (default **Purple / Yellow**): in py the Tank sets the purple pillar (fully up, then down one
+tick), stands on the purple pad at 32 s on the Odin timer, steps onto the netherbrick bridge so Storm is
+crushed, and leaps to the Mage. The Mage beams Storm from the ledge facing purple, then crushes him on the
+yellow pad, and the Healer just stays safe for the leaps. Switch to **Green / Yellow** in the picker or with
+`/rolecall set crush gy` (Healer drops green, Tank drops yellow).
 
 ## Editing the steps (match the ADG video)
 

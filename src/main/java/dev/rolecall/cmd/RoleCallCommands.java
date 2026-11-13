@@ -119,6 +119,9 @@ public final class RoleCallCommands {
 			dev.rolecall.ui.Callouts.show(Component.literal("▶ Callout size " + ConfigManager.get().calloutScale).withColor(0x55FFFF), Component.literal("preview"), 0x55FFFF, 50);
 			return 1;
 		})));
+		set.then(literal("crush")
+				.then(literal("py").executes(ctx -> crush(ctx.getSource(), dev.rolecall.model.StormCrush.PY)))
+				.then(literal("gy").executes(ctx -> crush(ctx.getSource(), dev.rolecall.model.StormCrush.GY))));
 		set.then(literal("volume").then(argument("volume", FloatArgumentType.floatArg(0, 2)).executes(ctx -> {
 			ConfigManager.get().soundVolume = FloatArgumentType.getFloat(ctx, "volume");
 			ConfigManager.save();
@@ -126,6 +129,13 @@ public final class RoleCallCommands {
 			return 1;
 		})));
 		return set;
+	}
+
+	private static int crush(FabricClientCommandSource src, dev.rolecall.model.StormCrush c) {
+		ConfigManager.get().stormCrush = c;
+		ConfigManager.save();
+		src.sendFeedback(msg("Storm crush: " + c.label()));
+		return 1;
 	}
 
 	private static void toggle(LiteralArgumentBuilder<FabricClientCommandSource> set, String name,

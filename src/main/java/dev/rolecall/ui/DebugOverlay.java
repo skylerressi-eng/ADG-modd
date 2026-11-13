@@ -35,7 +35,7 @@ public final class DebugOverlay implements HudElement {
 				+ "  lightning: " + s.lightning() + "  stormDead: " + s.stormDead());
 		DungeonClass c = RoleCall.effectiveClass();
 		lines.add("you: " + RoleCall.ownName() + "  class: " + c + " §7(" + RoleCall.classSource() + ")");
-		lines.add("predev: " + o.predev() + " §7(" + ConfigManager.get().predev + ")§r  s4: " + o.s4Split().dataId());
+		lines.add("predev: " + o.predev() + " §7(" + ConfigManager.get().predev + ")§r  s4: " + o.s4Split().dataId() + "  crush: " + o.crush().dataId());
 		lines.add("step: " + (v.current() == null ? "-" : v.current().id + " (" + (v.index() + 1) + "/" + v.groupSize() + ")")
 				+ "  skips: " + RoleCall.manualSkips());
 		lines.add(String.format("pos: %.1f %.1f %.1f  nearest: %s", s.x(), s.y(), s.z(), RoleCall.nearestObjective()));

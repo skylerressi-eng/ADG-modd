@@ -54,5 +54,7 @@ public final class Step {
 		public Boolean predev;
 		/** "bers_device" or "bers_levers". */
 		public String s4split;
+		/** Storm crush: "py" (purple/yellow) or "gy" (green/yellow). */
+		public String crush;
 	}
 }

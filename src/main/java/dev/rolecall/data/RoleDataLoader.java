@@ -117,6 +117,9 @@ public final class RoleDataLoader {
 				&& !s.requires.s4split.equals("bers_device") && !s.requires.s4split.equals("bers_levers")) {
 			return "requires.s4split must be bers_device or bers_levers";
 		}
+		if (s.requires != null && s.requires.crush != null && !s.requires.crush.equals("py") && !s.requires.crush.equals("gy")) {
+			return "requires.crush must be py or gy";
+		}
 		// Unknown waypoint/route ids are allowed: user spots may not be recorded yet. They just don't draw.
 		return null;
 	}

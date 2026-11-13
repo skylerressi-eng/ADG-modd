@@ -128,7 +128,7 @@ public final class RoleCall {
 
 	public static StepEngine.Options options() {
 		RoleCallConfig c = ConfigManager.get();
-		return new StepEngine.Options(StepEngine.resolvePredev(c.predev, PARTY), c.s4Split);
+		return new StepEngine.Options(StepEngine.resolvePredev(c.predev, PARTY), c.s4Split, c.stormCrush);
 	}
 
 	/** The party members playing a class, for "Leap → MAGE (Name)". */

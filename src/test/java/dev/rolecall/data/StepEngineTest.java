@@ -29,7 +29,7 @@ class StepEngineTest {
 	@Test
 	void bundledDataLoadsCleanly() {
 		assertEquals(List.of(), DATA.problems());
-		assertEquals(75, DATA.stepCount());
+		assertEquals(79, DATA.stepCount());
 		assertEquals(39, DATA.objectives().size());
 		for (DungeonClass c : DungeonClass.values()) {
 			for (Step s : DATA.steps(c)) {
@@ -108,15 +108,15 @@ class StepEngineTest {
 	@Test
 	void fullF7RunPerClass() {
 		Map<DungeonClass, List<String>> seen = replay("sim/f7_full.txt", DEFAULT);
-		assertEquals(List.of("h_p1_mine", "h_p1_lights", "h_p1_arrows", "h_p2_finish", "h_p2_green", "h_p2_leap",
+		assertEquals(List.of("h_p1_mine", "h_p1_lights", "h_p1_arrows", "h_p2_finish", "h_p2_py", "h_p2_leap",
 				"h_s1_ss", "h_s2_lights", "h_s2_lever", "h_s2_gate", "h_s3_arrows", "h_s3_levers", "h_s4_levers",
 				"h_tunnel", "h_p4"), seen.get(DungeonClass.HEALER));
-		assertEquals(List.of("m_p1", "m_p2_clear", "m_p2_storm", "m_p2_leap", "m_s1_t4", "m_s2_t2", "m_s3_t2",
+		assertEquals(List.of("m_p1", "m_p2_clear", "m_p2_py", "m_p2_leap", "m_s1_t4", "m_s2_t2", "m_s3_t2",
 				"m_s4_t2", "m_tunnel", "m_p4"), seen.get(DungeonClass.MAGE));
 		assertEquals(List.of("a_p1_ss", "a_p2_wait", "a_p2_levers", "a_s1_levers", "a_s1_gate", "a_s1_stand",
 				"a_s2_t5", "a_s2_lever", "a_s3_t4", "a_s3_gate", "a_s3_levers", "a_s4_t4", "a_s4_levers", "a_tunnel",
 				"a_p4"), seen.get(DungeonClass.ARCHER));
-		assertEquals(List.of("t_p1", "t_p2_pad", "t_p2_yellow", "t_p2_leap", "t_s1_t2", "t_s1_t1", "t_s2_t1",
+		assertEquals(List.of("t_p1", "t_p2_py_raise", "t_p2_py_crush", "t_p2_leap", "t_s1_t2", "t_s1_t1", "t_s2_t1",
 				"t_s2_help", "t_s3_t1", "t_s4_t1", "t_tunnel", "t_p4"), seen.get(DungeonClass.TANK));
 		assertEquals(List.of("b_p1", "b_p2", "b_s1_t3", "b_s2_t4", "b_s2_t3", "b_s3_t3", "b_s4_t3", "b_s4_ss",
 				"b_tunnel", "b_p4"), seen.get(DungeonClass.BERSERK));
@@ -126,8 +126,34 @@ class StepEngineTest {
 	void predevOffChangesHealerAndArcher() {
 		StepEngine.Options off = new StepEngine.Options(false, S4Split.BERS_DEVICE);
 		Map<DungeonClass, List<String>> seen = replay("sim/f7_full.txt", off);
-		assertEquals(List.of("h_p1_party", "h_p2_green", "h_p2_ss"), seen.get(DungeonClass.HEALER).subList(0, 3));
+		assertEquals(List.of("h_p1_party", "h_p2_py", "h_p2_ss"), seen.get(DungeonClass.HEALER).subList(0, 3));
 		assertEquals(List.of("a_p1_dps", "a_p2_clear", "a_p2_levers"), seen.get(DungeonClass.ARCHER).subList(0, 3));
+	}
+
+	/** Green/yellow crush: Healer drops green, Tank drops yellow, Mage leads Storm under both. */
+	@Test
+	void greenYellowCrush() {
+		StepEngine.Options gy = new StepEngine.Options(true, S4Split.BERS_DEVICE, dev.rolecall.model.StormCrush.GY);
+		Map<DungeonClass, List<String>> seen = replay("sim/f7_full.txt", gy);
+		assertEquals(List.of("m_p1", "m_p2_clear", "m_p2_storm", "m_p2_leap"), seen.get(DungeonClass.MAGE).subList(0, 4));
+		assertEquals(List.of("t_p1", "t_p2_pad", "t_p2_yellow", "t_p2_leap"), seen.get(DungeonClass.TANK).subList(0, 4));
+		assertEquals(List.of("h_p2_finish", "h_p2_green", "h_p2_leap"), seen.get(DungeonClass.HEALER).subList(3, 6));
+	}
+
+	/** Purple/yellow: the Tank crushes on purple and leaps to Mage; the Mage crushes on yellow. */
+	@Test
+	void purpleYellowCrushRoles() {
+		Step tank = StepEngine.group(DATA, DungeonClass.TANK, Floor.F7, Phase.P2, 0, DEFAULT).get(1);
+		assertEquals("t_p2_py_crush", tank.id);
+		assertEquals("MAGE", tank.leap);
+		assertTrue(tank.text.contains("PURPLE"));
+		Step mage = StepEngine.group(DATA, DungeonClass.MAGE, Floor.F7, Phase.P2, 0, DEFAULT).get(1);
+		assertTrue(mage.text.contains("YELLOW pad"), mage.text);
+		for (DungeonClass c : DungeonClass.values()) {
+			for (Step st : StepEngine.group(DATA, c, Floor.F7, Phase.P2, 0, DEFAULT)) {
+				assertFalse(st.text.contains("GREEN"), c + " " + st.id + " mentions green in py");
+			}
+		}
 	}
 
 	@Test
@@ -155,8 +181,8 @@ class StepEngineTest {
 		RunState s = new RunState();
 		s.setFloor(Floor.F7);
 		s.onChat("[BOSS] Storm: Pathetic Maxor, just like expected.");
-		assertEquals("t_p2_pad", StepEngine.compute(DATA, s, DungeonClass.TANK, DEFAULT, 0).current().id);
-		assertEquals("t_p2_yellow", StepEngine.compute(DATA, s, DungeonClass.TANK, DEFAULT, 1).current().id);
+		assertEquals("t_p2_py_raise", StepEngine.compute(DATA, s, DungeonClass.TANK, DEFAULT, 0).current().id);
+		assertEquals("t_p2_py_crush", StepEngine.compute(DATA, s, DungeonClass.TANK, DEFAULT, 1).current().id);
 		assertEquals("t_p2_leap", StepEngine.compute(DATA, s, DungeonClass.TANK, DEFAULT, 9).current().id, "never past the last");
 	}
 

@@ -23,7 +23,10 @@ public final class StepEngine {
 	}
 
 	/** Toggles that decide which optional steps apply. */
-	public record Options(boolean predev, S4Split s4Split) {
+	public record Options(boolean predev, S4Split s4Split, dev.rolecall.model.StormCrush crush) {
+		public Options(boolean predev, S4Split s4Split) {
+			this(predev, s4Split, dev.rolecall.model.StormCrush.PY);
+		}
 	}
 
 	/** What the HUD shows. {@code current} is null when the class has nothing for this phase. */
@@ -93,6 +96,7 @@ public final class StepEngine {
 		if (s.requires != null) {
 			if (s.requires.predev != null && s.requires.predev != opt.predev()) return false;
 			if (s.requires.s4split != null && !s.requires.s4split.equals(opt.s4Split().dataId())) return false;
+			if (s.requires.crush != null && !s.requires.crush.equals(opt.crush().dataId())) return false;
 		}
 		return true;
 	}

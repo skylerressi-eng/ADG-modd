@@ -24,5 +24,7 @@
  "key.category.rolecall.main": "RoleCall",
  "key.rolecall.next": "Next step (HUD only)",
  "key.rolecall.back": "Previous step (HUD only)",
- "key.rolecall.picker": "Open class picker"
+ "key.rolecall.picker": "Open class picker",
+ "rolecall.picker.crush": "Storm crush: %s",
+ "rolecall.picker.crush.tooltip": "Purple/Yellow (py): Tank crushes on purple, Mage on yellow. Green/Yellow (gy): Healer drops green, Tank drops yellow."
 }

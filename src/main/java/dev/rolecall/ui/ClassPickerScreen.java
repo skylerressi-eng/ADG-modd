@@ -23,6 +23,7 @@ public final class ClassPickerScreen extends Screen {
 	private Button autoButton;
 	private Button predevButton;
 	private Button splitButton;
+	private Button crushButton;
 
 	public ClassPickerScreen() {
 		super(Component.translatable("rolecall.picker.title"));
@@ -34,7 +35,7 @@ public final class ClassPickerScreen extends Screen {
 		DungeonClass[] classes = DungeonClass.values();
 		int rowW = classes.length * CLASS_W + (classes.length - 1) * GAP;
 		int x = (this.width - rowW) / 2;
-		int y = this.height / 2 - 60;
+		int y = this.height / 2 - 72;
 		for (DungeonClass c : classes) {
 			Button b = Button.builder(Component.literal(c.displayName()).withColor(c.rgb()), btn -> pick(c))
 					.bounds(x, y, CLASS_W, CLASS_H).build();
@@ -61,7 +62,14 @@ public final class ClassPickerScreen extends Screen {
 					refreshLabels();
 				}).bounds(cx - 150, y, 300, 20)
 				.tooltip(Tooltip.create(Component.translatable("rolecall.picker.s4.tooltip"))).build());
-		y += 32;
+		y += 24;
+		crushButton = addRenderableWidget(Button.builder(Component.empty(), b -> {
+					RoleCallConfig cfg = ConfigManager.get();
+					cfg.stormCrush = cfg.stormCrush.other();
+					refreshLabels();
+				}).bounds(cx - 150, y, 300, 20)
+				.tooltip(Tooltip.create(Component.translatable("rolecall.picker.crush.tooltip"))).build());
+		y += 30;
 		addRenderableWidget(Button.builder(Component.translatable("gui.done"), b -> onClose())
 				.bounds(cx - 50, y, 100, 20).build());
 		refreshLabels();
@@ -80,14 +88,15 @@ public final class ClassPickerScreen extends Screen {
 				Component.translatable("rolecall.predev." + cfg.predev.name().toLowerCase(Locale.ROOT))));
 		splitButton.setMessage(Component.translatable("rolecall.picker.s4",
 				Component.translatable("rolecall.s4." + cfg.s4Split.dataId())));
+		crushButton.setMessage(Component.translatable("rolecall.picker.crush", cfg.stormCrush.label()));
 	}
 
 	@Override
 	public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
 		super.extractRenderState(graphics, mouseX, mouseY, partialTick);
-		graphics.centeredText(this.font, this.title, this.width / 2, this.height / 2 - 90, 0xFFFFFFFF);
+		graphics.centeredText(this.font, this.title, this.width / 2, this.height / 2 - 102, 0xFFFFFFFF);
 		graphics.centeredText(this.font, Component.translatable("rolecall.picker.subtitle"),
-				this.width / 2, this.height / 2 - 78, 0xFFAAAAAA);
+				this.width / 2, this.height / 2 - 90, 0xFFAAAAAA);
 
 		// Thick class-colored frame around the picked class.
 		DungeonClass picked = ConfigManager.get().manualClass;

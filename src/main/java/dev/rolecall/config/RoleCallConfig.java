@@ -14,6 +14,7 @@ public class RoleCallConfig {
 
 	public PredevMode predev = PredevMode.AUTO;
 	public S4Split s4Split = S4Split.BERS_DEVICE;
+	public dev.rolecall.model.StormCrush stormCrush = dev.rolecall.model.StormCrush.PY;
 
 	public boolean hudEnabled = true;
 	/** Small HUD: short step name, leap and next on one line each. Off = detailed HUD with notes. */
@@ -43,6 +44,9 @@ public class RoleCallConfig {
 	void normalize() {
 		if (predev == null) {
 			predev = PredevMode.AUTO;
+		}
+		if (stormCrush == null) {
+			stormCrush = dev.rolecall.model.StormCrush.PY;
 		}
 		if (s4Split == null) {
 			s4Split = S4Split.BERS_DEVICE;

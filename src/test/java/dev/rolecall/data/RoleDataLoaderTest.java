@@ -34,7 +34,7 @@ class RoleDataLoaderTest {
 	@Test
 	void badJsonDoesNotCrash() {
 		RoleData d = RoleDataLoader.load(ROLES, "{ not json", OBJ, "[]", "{\"routes\": {\"predev\": [[1,2]]}}");
-		assertEquals(75, d.stepCount(), "bundled steps still load");
+		assertEquals(79, d.stepCount(), "bundled steps still load");
 		assertEquals(3, d.problems().size(), d.problems().toString());
 	}
 

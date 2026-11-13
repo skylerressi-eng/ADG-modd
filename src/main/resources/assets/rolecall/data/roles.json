@@ -413,7 +413,24 @@
      "event": "storm_dead"
     },
     "note": "The Healer drops green. At half HP lead him under YELLOW (the Tank drops it)",
-    "src": "hn5984063 Floor 7 Guide (Advanced)"
+    "src": "hn5984063 Floor 7 Guide (Advanced)",
+    "requires": {
+     "crush": "gy"
+    }
+   },
+   {
+    "id": "m_p2_py",
+    "phase": "P2",
+    "text": "Ledge facing PURPLE (yellow side): beam Storm. When he's enraged, go to the YELLOW pad and drop it as he flies in",
+    "shortText": "Beam Storm, crush YELLOW",
+    "until": {
+     "event": "storm_dead"
+    },
+    "requires": {
+     "crush": "py"
+    },
+    "note": "The Tank crushes him on purple first. You need Storm at half HP in 4 LCM hits (2 taps on Hype), otherwise play green/yellow",
+    "src": "hn5984063 Floor 7 Guide (Advanced), py section"
    },
    {
     "id": "m_p2_leap",
@@ -599,7 +616,23 @@
     "until": {
      "event": "storm_dead"
     },
-    "src": "hn5984063 Floor 7 Guide (Advanced)"
+    "src": "hn5984063 Floor 7 Guide (Advanced)",
+    "requires": {
+     "crush": "gy"
+    }
+   },
+   {
+    "id": "h_p2_py",
+    "phase": "P2",
+    "text": "Stay alive and in a safe spot: the Mage and Tank leap to you during the purple/yellow crush",
+    "shortText": "Stay safe for leaps",
+    "until": {
+     "event": "storm_dead"
+    },
+    "requires": {
+     "crush": "py"
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced), py section"
    },
    {
     "id": "h_p2_leap",
@@ -791,6 +824,34 @@
     "src": "hn5984063 Floor 7 Guide (Advanced)"
    },
    {
+    "id": "t_p2_py_raise",
+    "phase": "P2",
+    "text": "Raise the PURPLE pillar fully, then lower it one tick. Wait near the purple pad for lightning",
+    "shortText": "Set PURPLE pillar",
+    "until": {
+     "event": "lightning"
+    },
+    "requires": {
+     "crush": "py"
+    },
+    "src": "hn5984063 Floor 7 Guide (Advanced), py section"
+   },
+   {
+    "id": "t_p2_py_crush",
+    "phase": "P2",
+    "text": "At 32s (Odin timer) stand on the PURPLE pad. When the pillar moves, step onto the netherbrick bridge so Storm gets crushed, then Leap → MAGE",
+    "shortText": "Crush on PURPLE",
+    "leap": "MAGE",
+    "until": {
+     "event": "storm_dead"
+    },
+    "requires": {
+     "crush": "py"
+    },
+    "note": "Then go behind the YELLOW pillar and keep aggro. Bugatti crush in yellow: stand high on the bridge when you crush purple",
+    "src": "hn5984063 Floor 7 Guide (Advanced), py section"
+   },
+   {
     "id": "t_p2_pad",
     "phase": "P2",
     "text": "Go to the YELLOW pad and clear mobs (help Mage and Berserk)",
@@ -798,7 +859,10 @@
     "until": {
      "event": "lightning"
     },
-    "src": "hn5984063 Floor 7 Guide (Advanced)"
+    "src": "hn5984063 Floor 7 Guide (Advanced)",
+    "requires": {
+     "crush": "gy"
+    }
    },
    {
     "id": "t_p2_yellow",
@@ -808,7 +872,10 @@
     "until": {
      "event": "storm_dead"
     },
-    "src": "hn5984063 Floor 7 Guide (Advanced)"
+    "src": "hn5984063 Floor 7 Guide (Advanced)",
+    "requires": {
+     "crush": "gy"
+    }
    },
    {
     "id": "t_p2_leap",
