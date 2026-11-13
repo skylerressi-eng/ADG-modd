@@ -14,6 +14,7 @@ import dev.rolecall.state.ChatTriggers;
 import dev.rolecall.state.FloorParser;
 import dev.rolecall.state.PartyTracker;
 import dev.rolecall.state.RunState;
+import dev.rolecall.ui.Callouts;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.PlayerInfo;
@@ -55,7 +56,6 @@ public final class RoleCall {
 	private static String groupKey = "";
 	private static int manualSkips;
 	private static List<String> gaps = List.of();
-	private static long lightningTitleUntil;
 
 	private RoleCall() {
 	}
@@ -158,6 +158,7 @@ public final class RoleCall {
 
 	public static void tick(Minecraft mc) {
 		ticks++;
+		Callouts.tick();
 		if (mc.level != lastLevel) {
 			lastLevel = mc.level;
 			resetRun();
@@ -181,6 +182,7 @@ public final class RoleCall {
 	}
 
 	private static void resetRun() {
+		Callouts.clear();
 		STATE.reset();
 		PARTY.reset();
 		simClass = null;
@@ -218,22 +220,43 @@ public final class RoleCall {
 
 	private static void onStepChanged(Minecraft mc, Step step, DungeonClass cls) {
 		RoleCallConfig c = ConfigManager.get();
-		if (c.stepTitles && ticks >= lightningTitleUntil) {
-			mc.gui.hud.setTimes(4, 40, 10);
-			mc.gui.hud.setTitle(Component.literal(step.titleText()).withColor(cls == null ? 0xFFFFFF : cls.rgb()));
-			mc.gui.hud.setSubtitle(step.leap != null
-					? leapComponent(DungeonClass.parse(step.leap).orElse(null))
-					: Component.empty());
-		}
-		ding(mc, 1.6f);
-		if (step.leap != null && c.leapPing && mc.player != null) {
+		int color = cls == null ? 0xFFFFFF : cls.rgb();
+		if (step.leap != null) {
 			DungeonClass target = DungeonClass.parse(step.leap).orElse(null);
-			// Shown only in your own chat; nothing is sent to the server.
-			mc.player.sendSystemMessage(Component.literal("[RoleCall] ").withColor(0xAAAAAA)
-					.append(Component.literal("LEAP NOW: ").withColor(0xFF5555))
-					.append(leapComponent(target)));
+			int tc = target == null ? 0xFFFFFF : target.rgb();
+			List<String> names = target == null ? List.of() : namesOf(target);
+			Callouts.urgent(Component.literal("LEAP → " + (target == null ? step.leap : target.name())).withColor(tc),
+					Component.literal(names.isEmpty() ? step.titleText() : String.join(", ", names)), tc, 70);
+			if (c.leapPing && mc.player != null) {
+				// Shown only in your own chat; nothing is sent to the server.
+				mc.player.sendSystemMessage(Component.literal("[RoleCall] ").withColor(0xAAAAAA)
+						.append(Component.literal("LEAP NOW: ").withColor(0xFF5555))
+						.append(leapComponent(target)));
+			}
 			ding(mc, 2.0f);
+			ding(mc, 1.5f);
+			return;
 		}
+		Callouts.show(Component.literal("▶ " + step.titleText()).withColor(color),
+				Component.literal(STATE.phaseLabel() + (view.groupSize() > 1 ? "  ·  step " + (view.index() + 1) + "/" + view.groupSize() : "")),
+				color, 45);
+		ding(mc, 1.6f);
+	}
+
+	/** Marks an objective done; a callout if it was one of yours. */
+	private static void markDone(String id) {
+		if (STATE.objectiveDone(id)) return;
+		STATE.markObjectiveDone(id);
+		Step cur = view.current();
+		dev.rolecall.data.Objective o = data.objective(id);
+		if (cur != null && cur.waypoints != null && cur.waypoints.contains(id) && o != null) {
+			eventCallout("✔ " + o.label + " done", 0x55FF55);
+		}
+	}
+
+	/** Small "event" callouts: section done, gate, core, your objective done. */
+	private static void eventCallout(String text, int color) {
+		Callouts.show(Component.literal(text).withColor(color), null, color, 30);
 	}
 
 	private static String editingMine;
@@ -290,14 +313,26 @@ public final class RoleCall {
 		if (e.isProgress()) {
 			attribute(e);
 		}
+		int sectionBefore = STATE.section();
 		STATE.apply(e);
-		if (e.kind() == ChatTriggers.Kind.LIGHTNING && ConfigManager.get().lightningWarning) {
-			Minecraft mc = Minecraft.getInstance();
-			mc.gui.hud.setTimes(2, 60, 10);
-			mc.gui.hud.setTitle(Component.translatable("rolecall.title.lightning").withColor(0xFF5555));
-			mc.gui.hud.setSubtitle(Component.translatable("rolecall.title.lightning.sub").withColor(0xFFFF55));
-			lightningTitleUntil = ticks + 60;
-			ding(mc, 0.7f);
+		Minecraft mc = Minecraft.getInstance();
+		switch (e.kind()) {
+			case LIGHTNING -> {
+				if (ConfigManager.get().lightningWarning) {
+					Callouts.urgent(Component.literal("⚡ LIGHTNING").withColor(0xFFFF55),
+							Component.literal("get under your pillar"), 0xFFFF55, 70);
+					ding(mc, 0.7f);
+				}
+			}
+			case GATE -> eventCallout("Gate blown", 0x55FF55);
+			case CORE_OPEN -> eventCallout("Core open · never melee Goldor", 0xFF5555);
+			case P1_START, P2_START, P3_START, P4_START, WITHER_KING -> eventCallout(STATE.phase().label(), 0xFFFFFF);
+			case STORM_DEAD -> eventCallout("Storm is dead", 0x55FFFF);
+			default -> {
+			}
+		}
+		if (e.isProgress() && STATE.section() != sectionBefore && sectionBefore > 0) {
+			eventCallout("✔ S" + sectionBefore + " done → S" + STATE.section(), 0x55FF55);
 		}
 	}
 
@@ -321,7 +356,7 @@ public final class RoleCall {
 			}
 		}
 		if (best != null) {
-			STATE.markObjectiveDone(best.id);
+			markDone(best.id);
 		}
 	}
 
@@ -428,7 +463,7 @@ public final class RoleCall {
 
 		@Override
 		public void done(String objectiveId) {
-			STATE.markObjectiveDone(objectiveId);
+			markDone(objectiveId);
 		}
 
 		@Override

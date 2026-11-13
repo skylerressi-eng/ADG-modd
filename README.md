@@ -9,7 +9,7 @@ A client-side Fabric mod for Hypixel SkyBlock that shows what **your** dungeon c
 > mines, solves anything or sends chat/party messages for you, and it does not touch packets. Hypixel's
 > Allowed Modifications rules still apply, and any mod can get you banned. You use it at your own risk.
 
-![HUD](docs/screenshots/m2-hud-gaps.png)
+![HUD](docs/screenshots/compact-hud-dig.png)
 
 ## What it does
 
@@ -26,15 +26,25 @@ A client-side Fabric mod for Hypixel SkyBlock that shows what **your** dungeon c
 - **Steps advance by themselves** when the thing they wait for happens: your terminal/lever/device
   completes, the gate blows, lightning starts, Storm dies, or you reach a spot (Healer predev). Bind the
   "Next step" / "Previous step" keys if you want to move it yourself (this only changes the HUD).
-- **Title + ding** when your step changes, and a big `LIGHTNING / get under your pillar` warning.
+- **Callouts**: a compact banner above your crosshair (not Minecraft's huge title) with a ding. It fires for
+  every step change, `LEAP → MAGE` plus the name (big and pulsing), `⚡ LIGHTNING`, `✔ Terminal 4 done`,
+  `✔ S1 done → S2`, `Gate blown`, `Core open · never melee Goldor`, Storm dead and phase changes.
+  `/rolecall set callouts off`, `/rolecall set callout_size 0.8`.
+- **Compact HUD** (default): class + phase, your step, the leap, dig progress, next step and party gaps, at
+  about half the old size. `/rolecall set compact off` brings back the detailed HUD with notes.
+- **Pointer line** from your crosshair to the next block to dig, or else to your current objective
+  (`/rolecall set tracers off`).
 - **Waypoints** (box, label, distance) on **only your** objectives for the current step. A completed one
   is hidden by finding the player who completed it and hiding the nearest objective of that kind, which is
   the same approach Skyblocker uses. `/rolecall set others on` also shows the rest of the section, dimmed.
-- **Spirit Leap menu**: outlines the head of the player you should leap to. Render only.
+- **Spirit Leap menu**: the right head gets a class-coloured fill, a thick border and a `LEAP` tag, and
+  every other head is dimmed. Render only: it never clicks.
 - **Leap ping**: when a step tells you to leap, a `LEAP NOW: Leap → MAGE (name)` line appears in **your
   own** chat with a sound. It is never sent to the server or the party. Turn it off with `/rolecall set ping off`.
 - **Predev mining outlines**: red outlines on the blocks to mine during Healer predev. Record them once
-  with `/rolecall mine predev add` while looking at each block. An outline disappears when its block is gone.
+  with `/rolecall mine predev add` while looking at each block, in the order you dig them. The next block gets
+  a double outline, a `DIG (n left)` label and the pointer line, and the HUD shows `Dig 3/12 · next 5m`.
+  An outline disappears when its block is gone.
 - **Your own spots and routes**: `/rolecall here` and `/rolecall route` (for example the Healer predev
   mining route), drawn as numbered points joined by a line.
 - **M7 P5**: relic and dragon-side reminders, plus waypoints on the relic cauldrons and dragon spawns.
@@ -47,9 +57,9 @@ A client-side Fabric mod for Hypixel SkyBlock that shows what **your** dungeon c
 ## Install
 
 1. Minecraft **26.2** with Fabric Loader **0.19.5+**.
-2. Put `rolecall-0.4.0.jar` and **Fabric API** for 26.2 (0.161.0+26.2 or newer) in `.minecraft/mods/`.
+2. Put `rolecall-0.5.0.jar` and **Fabric API** for 26.2 (0.161.0+26.2 or newer) in `.minecraft/mods/`.
 
-Direct download: [releases/rolecall-0.4.0.jar](releases/rolecall-0.4.0.jar).
+Direct download: [releases/rolecall-0.5.0.jar](releases/rolecall-0.5.0.jar).
 
 No other mods are needed. The floor comes from the scoreboard, so the Hypixel Mod API isn't required.
 
@@ -68,7 +78,7 @@ No other mods are needed. The floor comes from the scoreboard, so the Hypixel Mo
 | `/rolecall reload` | Re-read the JSON files and print any problems |
 | `/rolecall debug` | Overlay with everything RoleCall detected (scoreboard line, phase, section, party, nearest objective…) |
 | `/rolecall sim <f7_full\|m7_p5\|yours\|stop>` | Play a fake run **locally** to check the HUD (nothing is sent to the server) |
-| `/rolecall set <titles\|sound\|lightning\|waypoints\|others\|leap\|ping\|idle\|hud> [on\|off]` · `/rolecall set volume <0-2>` | Toggles |
+| `/rolecall set <callouts\|compact\|tracers\|sound\|lightning\|waypoints\|others\|leap\|ping\|idle\|hud> [on\|off]` · `/rolecall set callout_size <0.5-2>` · `/rolecall set volume <0-2>` | Toggles |
 
 Keybinds (Options → Controls → RoleCall, unbound by default): Next step, Previous step, Open class picker.
 

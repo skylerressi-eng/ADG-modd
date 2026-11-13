@@ -46,18 +46,31 @@ public final class LeapHighlight {
 		int left = (screen.width - 176) / 2;
 		int top = (screen.height - (114 + rows * 18)) / 2;
 		boolean found = false;
+		int tint = (0x60 << 24) | (target.argb() & 0xFFFFFF);
+		var font = Minecraft.getInstance().font;
 		for (Slot slot : screen.getMenu().slots) {
 			if (slot.index >= rows * 9 || slot.container == Minecraft.getInstance().player.getInventory()) continue;
 			if (slot.getItem().isEmpty()) continue;
+			int x = left + slot.x, y = top + slot.y;
 			List<String> words = List.of(slot.getItem().getHoverName().getString().toLowerCase(Locale.ROOT).split("[^a-z0-9_]+"));
+			boolean match = false;
 			for (String n : names) {
-				if (words.contains(n.toLowerCase(Locale.ROOT))) {
-					int x = left + slot.x, y = top + slot.y;
-					for (int i = 1; i <= 2; i++) {
-						g.outline(x - i, y - i, 16 + 2 * i, 16 + 2 * i, target.argb());
-					}
-					found = true;
+				if (words.contains(n.toLowerCase(Locale.ROOT))) match = true;
+			}
+			if (match) {
+				// Class-coloured fill, thick border and a LEAP tag on the right head.
+				g.fill(x, y, x + 16, y + 16, tint);
+				for (int i = 1; i <= 3; i++) {
+					g.outline(x - i, y - i, 16 + 2 * i, 16 + 2 * i, target.argb());
 				}
+				String tag = "LEAP";
+				int tw = font.width(tag);
+				g.fill(x + 8 - tw / 2 - 2, y - 14, x + 8 + tw / 2 + 2, y - 4, 0xE0000000);
+				g.text(font, tag, x + 8 - tw / 2, y - 13, target.argb(), false);
+				found = true;
+			} else {
+				// Dim everyone else so the right head stands out.
+				g.fill(x, y, x + 16, y + 16, 0xA0000000);
 			}
 		}
 		Component msg = Component.literal("RoleCall: ").append(RoleCall.leapComponent(target))

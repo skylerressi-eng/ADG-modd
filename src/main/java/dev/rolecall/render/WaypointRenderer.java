@@ -43,7 +43,7 @@ public final class WaypointRenderer {
 		if (!ConfigManager.get().waypoints || mc.player == null || mc.level == null) {
 			return;
 		}
-		List<int[]> mine = mineBlocks(mc);
+		List<int[]> mine = DigHelper.remaining(mc);
 		boolean run = RoleCall.active();
 		List<Wp> boxes = run ? collect() : List.of();
 		List<int[]> route = run ? route() : List.of();
@@ -52,6 +52,20 @@ public final class WaypointRenderer {
 		}
 		CameraRenderState cam = ctx.levelState().cameraRenderState;
 		Vec3 c = cam.pos;
+		// Pointer target: the next block to dig, else your first unfinished objective.
+		final int[] target;
+		final int targetColor;
+		if (!mine.isEmpty()) {
+			target = mine.get(0);
+			targetColor = 0xFFFF4040;
+		} else if (!boxes.isEmpty() && boxes.get(0).argb >>> 24 == 0xFF) {
+			Wp w = boxes.get(0);
+			target = new int[]{(int) w.x, (int) w.y, (int) w.z};
+			targetColor = w.argb;
+		} else {
+			target = null;
+			targetColor = 0;
+		}
 		SubmitNodeCollector out = ctx.submitNodeCollector();
 		PoseStack ps = new PoseStack();
 
@@ -67,8 +81,21 @@ public final class WaypointRenderer {
 			for (int[] p : route) {
 				small(buf, pose, (float) (p[0] - c.x), (float) (p[1] - c.y), (float) (p[2] - c.z), 0xFFFFFF55);
 			}
-			for (int[] p : mine) {
-				box(buf, pose, (float) (p[0] - c.x), (float) (p[1] - c.y), (float) (p[2] - c.z), 0xFFFF3030);
+			for (int i = 0; i < mine.size(); i++) {
+				int[] p = mine.get(i);
+				float bx = (float) (p[0] - c.x), by = (float) (p[1] - c.y), bz = (float) (p[2] - c.z);
+				if (i == 0) {
+					// The next block on your path: double outline.
+					boxSized(buf, pose, bx - 0.04f, by - 0.04f, bz - 0.04f, 1.08f, 0xFFFF2020);
+					boxSized(buf, pose, bx + 0.08f, by + 0.08f, bz + 0.08f, 0.84f, 0xFFFF8080);
+				} else {
+					box(buf, pose, bx, by, bz, 0x99FF3030);
+				}
+			}
+			if (target != null && ConfigManager.get().tracers) {
+				Vec3 look = mc.player.getViewVector(1f);
+				line(buf, pose, (float) look.x * 0.6f, (float) look.y * 0.6f, (float) look.z * 0.6f,
+						(float) (target[0] + .5 - c.x), (float) (target[1] + .5 - c.y), (float) (target[2] + .5 - c.z), targetColor);
 			}
 		});
 
@@ -78,6 +105,10 @@ public final class WaypointRenderer {
 			double dist = Math.sqrt(sq(st.x() - (w.x + .5)) + sq(st.y() - (w.y + .5)) + sq(st.z() - (w.z + .5)));
 			label(out, ps, font, cam, w.x + .5, w.y + 1.75, w.z + .5, w.label, w.argb);
 			label(out, ps, font, cam, w.x + .5, w.y + 1.25, w.z + .5, String.format("%.0fm", dist), 0xFFDDDDDD);
+		}
+		if (!mine.isEmpty()) {
+			int[] p = mine.get(0);
+			label(out, ps, font, cam, p[0] + .5, p[1] + 1.35, p[2] + .5, "DIG (" + mine.size() + " left)", 0xFFFF5555);
 		}
 		for (int i = 0; i < route.size(); i++) {
 			int[] p = route.get(i);
@@ -119,21 +150,6 @@ public final class WaypointRenderer {
 		return o.floors == null || o.floors.isEmpty() || (RoleCall.state().floor() != null && o.floors.contains(RoleCall.state().floor().name()));
 	}
 
-	/** Recorded blocks to mine that are still there (already-mined blocks are skipped). */
-	private static List<int[]> mineBlocks(Minecraft mc) {
-		String name = RoleCall.activeMineList();
-		if (name == null) {
-			return List.of();
-		}
-		List<int[]> out = new ArrayList<>();
-		for (int[] p : RoleCall.data().mineList(name)) {
-			if (!mc.level.getBlockState(new net.minecraft.core.BlockPos(p[0], p[1], p[2])).isAir()) {
-				out.add(p);
-			}
-		}
-		return out;
-	}
-
 	private static List<int[]> route() {
 		Step cur = RoleCall.view().current();
 		return cur == null || cur.route == null ? List.of() : RoleCall.data().route(cur.route);
@@ -156,6 +172,22 @@ public final class WaypointRenderer {
 
 	private static void box(VertexConsumer b, PoseStack.Pose p, float x, float y, float z, int c) {
 		float X = x + 1, Y = y + 1, Z = z + 1;
+		line(b, p, x, y, z, X, y, z, c);
+		line(b, p, x, y, z, x, Y, z, c);
+		line(b, p, x, y, z, x, y, Z, c);
+		line(b, p, X, y, z, X, Y, z, c);
+		line(b, p, X, y, z, X, y, Z, c);
+		line(b, p, x, Y, z, X, Y, z, c);
+		line(b, p, x, Y, z, x, Y, Z, c);
+		line(b, p, x, y, Z, X, y, Z, c);
+		line(b, p, x, y, Z, x, Y, Z, c);
+		line(b, p, X, Y, z, X, Y, Z, c);
+		line(b, p, X, y, Z, X, Y, Z, c);
+		line(b, p, x, Y, Z, X, Y, Z, c);
+	}
+
+	private static void boxSized(VertexConsumer b, PoseStack.Pose p, float x, float y, float z, float s, int c) {
+		float X = x + s, Y = y + s, Z = z + s;
 		line(b, p, x, y, z, X, y, z, c);
 		line(b, p, x, y, z, x, Y, z, c);
 		line(b, p, x, y, z, x, y, Z, c);

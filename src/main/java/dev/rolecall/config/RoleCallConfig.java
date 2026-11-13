@@ -16,6 +16,12 @@ public class RoleCallConfig {
 	public S4Split s4Split = S4Split.BERS_DEVICE;
 
 	public boolean hudEnabled = true;
+	/** Small HUD: short step name, leap and next on one line each. Off = detailed HUD with notes. */
+	public boolean compactHud = true;
+	/** Size of the on-screen callout banner (0.5-2). */
+	public float calloutScale = 1.0f;
+	/** Pointer line from your crosshair to your current objective / next block to dig. */
+	public boolean tracers = true;
 	/** Show one small "waiting for F7/M7" line outside runs, so you can see the mod is loaded. */
 	public boolean idleHud = true;
 	public int hudX = 6;
@@ -43,6 +49,9 @@ public class RoleCallConfig {
 		}
 		if (!(hudScale >= 0.5f && hudScale <= 3.0f)) {
 			hudScale = 1.0f;
+		}
+		if (!(calloutScale >= 0.5f && calloutScale <= 2f)) {
+			calloutScale = 1.0f;
 		}
 		if (!(soundVolume >= 0f && soundVolume <= 2f)) {
 			soundVolume = 1.0f;

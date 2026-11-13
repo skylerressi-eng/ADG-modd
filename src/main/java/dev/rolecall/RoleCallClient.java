@@ -46,6 +46,7 @@ public final class RoleCallClient implements ClientModInitializer {
 
 		HudElementRegistry.addLast(Identifier.fromNamespaceAndPath(MOD_ID, "hud"), new RoleHud());
 		HudElementRegistry.addLast(Identifier.fromNamespaceAndPath(MOD_ID, "debug"), new DebugOverlay());
+		HudElementRegistry.addLast(Identifier.fromNamespaceAndPath(MOD_ID, "callouts"), new dev.rolecall.ui.Callouts());
 		LevelRenderEvents.COLLECT_SUBMITS.register(WaypointRenderer::render);
 		LeapHighlight.register();
 

@@ -110,6 +110,15 @@ public final class RoleCallCommands {
 		toggle(set, "hud", c -> c.hudEnabled, (c, v) -> c.hudEnabled = v);
 		toggle(set, "idle", c -> c.idleHud, (c, v) -> c.idleHud = v);
 		toggle(set, "ping", c -> c.leapPing, (c, v) -> c.leapPing = v);
+		toggle(set, "compact", c -> c.compactHud, (c, v) -> c.compactHud = v);
+		toggle(set, "tracers", c -> c.tracers, (c, v) -> c.tracers = v);
+		toggle(set, "callouts", c -> c.stepTitles, (c, v) -> c.stepTitles = v);
+		set.then(literal("callout_size").then(argument("size", FloatArgumentType.floatArg(0.5f, 2f)).executes(ctx -> {
+			ConfigManager.get().calloutScale = FloatArgumentType.getFloat(ctx, "size");
+			ConfigManager.save();
+			dev.rolecall.ui.Callouts.show(Component.literal("▶ Callout size " + ConfigManager.get().calloutScale).withColor(0x55FFFF), Component.literal("preview"), 0x55FFFF, 50);
+			return 1;
+		})));
 		set.then(literal("volume").then(argument("volume", FloatArgumentType.floatArg(0, 2)).executes(ctx -> {
 			ConfigManager.get().soundVolume = FloatArgumentType.getFloat(ctx, "volume");
 			ConfigManager.save();

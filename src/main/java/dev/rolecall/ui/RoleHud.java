@@ -25,10 +25,11 @@ import java.util.List;
  * has nothing to do (e.g. clear, until clear steps are written).
  */
 public final class RoleHud implements HudElement {
-	private static final int PADDING = 4;
+	private static final int PADDING = 3;
 	private static final int WRAP = 220;
+	private static final int WRAP_COMPACT = 170;
 	private static final float STEP_SCALE = 1.5f;
-	private static final int BACKGROUND = 0xA0101010;
+	private static final int BACKGROUND = 0x90101010;
 
 	private record Line(FormattedCharSequence text, float scale, int color) {
 	}
@@ -95,7 +96,8 @@ public final class RoleHud implements HudElement {
 	}
 
 	private static void add(List<Line> out, Font font, Component c, float scale, int color) {
-		for (FormattedCharSequence s : font.split(c, Math.round(WRAP / scale * (scale > 1 ? 1.35f : 1f)))) {
+		int wrap = ConfigManager.get().compactHud ? WRAP_COMPACT : WRAP;
+		for (FormattedCharSequence s : font.split(c, Math.round(wrap / scale * (scale > 1 ? 1.35f : 1f)))) {
 			out.add(new Line(s, scale, color));
 		}
 	}
@@ -106,6 +108,15 @@ public final class RoleHud implements HudElement {
 		StepEngine.View v = RoleCall.view();
 		DungeonClass cls = RoleCall.effectiveClass();
 
+		if (preview && !RoleCall.active() && ConfigManager.get().compactHud) {
+			DungeonClass c = cls != null ? cls : DungeonClass.HEALER;
+			add(out, font, Component.literal(c.name()).withColor(c.rgb()).append(Component.literal("  P2 Storm").withColor(0x999999)), 0.85f, 0xFFFFFFFF);
+			add(out, font, Component.literal("▶ Finish predev → Mage"), 1.2f, 0xFFFFFFFF);
+			add(out, font, Component.literal("⇒ ").append(Component.literal("Leap → MAGE (Magey)").withColor(DungeonClass.MAGE.rgb())), 1f, 0xFFFFFFFF);
+			add(out, font, Component.literal("Dig 7/12 · next 4m").withColor(0xFF5555), 1f, 0xFFFFFFFF);
+			add(out, font, Component.literal("next: Drop GREEN pillar"), 0.85f, 0xFF888888);
+			return out;
+		}
 		if (preview && !RoleCall.active()) {
 			DungeonClass c = cls != null ? cls : DungeonClass.HEALER;
 			add(out, font, header(c, "P1 Maxor", false), 1f, 0xFFAAAAAA);
@@ -124,6 +135,10 @@ public final class RoleHud implements HudElement {
 		Step cur = v.current();
 		if (cur == null) {
 			return out; // nothing for this class right now (e.g. clear with no clear steps)
+		}
+		if (ConfigManager.get().compactHud) {
+			compact(out, font, st, v, cls, cur);
+			return out;
 		}
 		add(out, font, header(cls, st.phaseLabel(), st.phaseFromFallback()), 1f, 0xFFAAAAAA);
 		add(out, font, Component.literal("▶ " + cur.text), STEP_SCALE, 0xFFFFFFFF);
@@ -147,6 +162,52 @@ public final class RoleHud implements HudElement {
 			add(out, font, Component.literal(gap), 1f, 0xFFFFAA55);
 		}
 		return out;
+	}
+
+	/**
+	 * Compact layout, about half the size of the detailed one:
+	 * <pre>
+	 * MAGE  P3 S1 3/7
+	 * ▶ Terminal 4
+	 * ⇒ Leap MAGE (Magey)
+	 * Dig 5/12 · 6m
+	 * next: S2 Terminal 2
+	 * no Tank: Terminal 2, Terminal 1
+	 * </pre>
+	 */
+	private static void compact(List<Line> out, Font font, RunState st, StepEngine.View v, DungeonClass cls, Step cur) {
+		MutableComponent head = Component.literal(cls.name()).withColor(cls.rgb())
+				.append(Component.literal("  " + st.phaseLabel().replace(" (", " ").replace(")", "")
+						+ (st.phaseFromFallback() ? " est." : "")).withColor(0x999999));
+		add(out, font, head, 0.85f, 0xFFFFFFFF);
+		add(out, font, Component.literal("▶ " + cur.titleText()), 1.2f, 0xFFFFFFFF);
+		if (cur.leap != null) {
+			DungeonClass target = DungeonClass.parse(cur.leap).orElse(null);
+			add(out, font, Component.literal("⇒ ").append(RoleCall.leapComponent(target)), 1f, 0xFFFFFFFF);
+		}
+		Minecraft mc = Minecraft.getInstance();
+		int total = dev.rolecall.render.DigHelper.total();
+		if (RoleCall.activeMineList() != null) {
+			if (total == 0) {
+				add(out, font, Component.literal("No dig blocks recorded (/rolecall mine predev add)").withColor(0xFF7777), 0.85f, 0xFFFFFFFF);
+			} else {
+				List<int[]> rem = dev.rolecall.render.DigHelper.remaining(mc);
+				String dist = "";
+				if (!rem.isEmpty() && mc.player != null) {
+					int[] p = rem.get(0);
+					dist = String.format(" · next %.0fm", Math.sqrt(mc.player.distanceToSqr(p[0] + .5, p[1] + .5, p[2] + .5)));
+				}
+				add(out, font, Component.literal("Dig " + (total - rem.size()) + "/" + total + dist).withColor(0xFF5555), 1f, 0xFFFFFFFF);
+			}
+		}
+		if (v.next() != null) {
+			add(out, font, Component.literal("next: " + where(cur, v.next()) + v.next().titleText()), 0.85f, 0xFF888888);
+		}
+		List<String> gaps = RoleCall.gaps();
+		if (!gaps.isEmpty()) {
+			add(out, font, Component.literal(String.join(" · ", gaps.stream()
+					.map(g -> g.replace("Unassigned (no ", "no ").replace("): S" + st.section() + " ", ": ")).toList())), 0.8f, 0xFFFFAA55);
+		}
 	}
 
 	/** "S2 " / "P4 " prefix when a later step belongs to another section or phase. */
